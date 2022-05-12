@@ -37,6 +37,7 @@ window.onload = function () {
     //rigth and left
     if (keys.right.pressed && player.position.x < 400) {
       player.speed.x = player.velocity;
+      player.currentSprite = player.sprites.run.right
     } else if (
       (keys.left.pressed && player.position.x > 100) ||
       (keys.left.pressed && player.position.x > 0)
@@ -175,7 +176,10 @@ console.log(platforms);
 
       case 68:
         console.log("this is right");
+        console.log(player.currentSprite)
         keys.right.pressed = true;
+        player.currentSprite = player.sprites.run.right
+        console.log(player.currentSprite)
         break;
 
       case 87:
@@ -199,6 +203,7 @@ console.log(platforms);
       case 68:
         console.log("this is right");
         keys.right.pressed = false;
+        
         break;
 
       case 87:
