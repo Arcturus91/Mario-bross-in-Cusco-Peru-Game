@@ -27,6 +27,7 @@ class Background{
 
 class Player {
   constructor() {
+    this.velocity = 5
     this.position = {
       x: 100,
       y: 50
@@ -35,7 +36,7 @@ class Player {
     this.height = 30;
     this.speed = {
       x: 0,
-      y: 1,
+      y: 0,
     };
   }
   draw() {
@@ -81,7 +82,7 @@ class Platform {
 
         this.img.src = "images/platformF.png";
         this.width = this.img.width/2;
-        console.log(this.width)
+
         this.height = this.img.height/3.5;
 
     }

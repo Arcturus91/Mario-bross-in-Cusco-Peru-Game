@@ -1,102 +1,74 @@
 window.onload = function () {
-
   const bg = new Background(0);
 
   const player = new Player();
 
-  const genericObjects = [new GenericObject({x:0,y:0})]
+  const genericObjects = [new GenericObject({ x: 0, y: 0 })];
 
-  const platforms = [
+  document.getElementById("start-button").onclick = function () {
+    if (!requestId) {
+      console.log("funciono");
+      startGame();
+    }
+  };
 
-    new Platform({
-        x: 30,
-        y: 550,
-      }),
-      new Platform({
-        x: 150*2,
-        y: 550,
-      }),
+  function startGame() {
+    requestId = requestAnimationFrame(updateGame);
+  }
 
-    new Platform({
-      x: 130,
-      y: 300,
-    }),
-    new Platform({
-      x: 440,
-      y: 400,
-    }),
-    new Platform({
-      x: 800,
-      y: 300,
-    }),
-    new Platform({
-      x: 130 + canvas.width,
-      y: 300,
-    }),
-    new Platform({
-      x: 440 + canvas.width,
-      y: 400,
-    }),
-    new Platform({
-      x: 800 + canvas.width,
-      y: 300,
-    }),
-  ];
+  //
 
-  function animate() {
+  function updateGame() {
     frames++;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    requestAnimationFrame(animate);
-    bg.draw();
-    genericObjects.forEach(genericObject =>{
-        genericObject.draw()
-    })
-  
 
-    platforms.forEach((platform) => {
-      platform.draw();
+    bg.draw();
+    genericObjects.forEach((genericObject) => {
+      genericObject.draw();
     });
+
+    generatePlatforms();
+    drawPlatforms();
 
     player.update();
 
     //controls section
     //rigth and left
     if (keys.right.pressed && player.position.x < 400) {
-      player.speed.x = 5;
-    } else if (keys.left.pressed && player.position.x > 100) {
-      player.speed.x = -5;
+      player.speed.x = player.velocity;
+    } else if (
+      (keys.left.pressed && player.position.x > 100) ||
+      (keys.left.pressed && player.position.x > 0)
+    ) {
+      player.speed.x = -player.velocity;
     } else {
       player.speed.x = 0;
 
-
-
       if (keys.right.pressed) {
+        scrollOffset += player.velocity;
         bg.x -= 5;
         platforms.forEach((platform) => {
-          platform.position.x -= 5;
-        })
+          platform.position.x -= player.velocity;
+        });
 
-        genericObjects.forEach(genericObject =>{
-            genericObject.position.x -= 3;
-        })
-        
-        
+        genericObjects.forEach((genericObject) => {
+          genericObject.position.x -= player.velocity * 0.66;
+        });
       } else if (keys.left.pressed) {
         bg.x += 5;
+        scrollOffset -= player.velocity;
         platforms.forEach((platform) => {
-          platform.position.x += 5;
-        })
+          platform.position.x += player.velocity;
+        });
 
-        genericObjects.forEach(genericObject =>{
-            genericObject.position.x += 3;
-        })
+        genericObjects.forEach((genericObject) => {
+          genericObject.position.xd += player.velocity * 0.66;
+        });
       }
-
-
-
     }
 
+    console.log(player.position.x , player.speed.x);
     //up section
     /*     if (keys.up.pressed && player.position.y > 0) {
         player.speed.y += 5;
@@ -118,9 +90,76 @@ window.onload = function () {
         player.speed.y = 0;
       }
     });
+
+    //loose condition
+    if (player.position.y > canvas.height) {
+      gameOver();
+    }
+
+    if (requestId) {
+      requestAnimationFrame(updateGame); //v1.2
+    }
   }
 
-  animate();
+  function gameOver() {
+    ctx.font = "50px Arial";
+    ctx.fillText("Perdiste, refresh the page", 400, 400, 400, 400);
+    requestId = undefined;
+  }
+
+  function generatePlatforms() {
+    let positionRandom = 100;
+    let positionFloor = 550;
+
+    if (frames < 5) {
+      let platform1 = new Platform({
+        x: positionRandom,
+        y: positionFloor,
+      });
+      platforms.push(platform1);
+    }
+
+    if (!(frames % 20 === 0)) {
+      return true;
+    }
+
+    positionRandom +=
+      frames * 15 + Math.floor(Math.random() * (canvas.width * 0.6));
+    positionFloor = 550;
+    //for the floor
+    const platform2 = new Platform({
+      x: positionRandom + 200,
+      y: positionFloor,
+    });
+
+    //for the platforms in the air
+    let positionRandomY = 0;
+    positionRandomY += Math.floor(Math.random() * (canvas.height * 0.7));
+    const platform1 = new Platform({ x: positionRandom, y: positionRandomY });
+
+    platforms.push(platform2, platform1);
+  }
+
+  function drawPlatforms() {
+    platforms.forEach((item, index_platform) => {
+      if (item.position.x + item.width <= 0) {
+        points++;
+
+        platforms.splice(index_platform, 1);
+      }
+
+      item.draw();
+    });
+
+    /* if((platforms.length % 100 === 0)){
+platforms.splice(0,10)
+console.log(platforms);
+  }; Porqué no borra los primeros?*/
+  }
+
+  if (requestId) {
+    updateGame();
+  }
 
   addEventListener("keydown", (event) => {
     switch (event.keyCode) {
@@ -140,8 +179,8 @@ window.onload = function () {
         break;
 
       case 87:
-        console.log("this is up");
-        player.speed.y -= 5;
+        console.log("this is key up down");
+        player.speed.y -= 20;
         break;
     }
   });
@@ -163,8 +202,6 @@ window.onload = function () {
         break;
 
       case 87:
-        console.log("this is up");
-        player.speed.y -= 20;
         break;
     }
   });
