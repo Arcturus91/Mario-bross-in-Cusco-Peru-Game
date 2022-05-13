@@ -147,18 +147,23 @@ window.onload = function () {
       platforms.push(platform1);
     }
 
-    if (!(frames % 20 === 0)) {
+    if (!(frames % 20 === 0)) {// Solo se construye en cada frame que es multiplo de 20.
       return true;
     }
 
     positionRandom +=
       frames * 15 + Math.floor(Math.random() * (canvas.width * 0.6));
     positionFloor = 550;
+
     //for the floor
+
     const platform2 = new Platform({
-      x: positionRandom + 200,
+      x: frames*10 + 100+ 3*points ,
       y: positionFloor,
+
     });
+
+    console.log(platform2,frames,points)
 
     //for the platforms in the air
     let positionRandomY = 0;
@@ -166,6 +171,8 @@ window.onload = function () {
     const platform1 = new Platform({ x: positionRandom, y: positionRandomY });
 
     platforms.push(platform2, platform1);
+
+
   }
 
   function drawPlatforms() {
