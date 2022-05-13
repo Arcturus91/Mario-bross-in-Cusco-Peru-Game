@@ -5,6 +5,20 @@ window.onload = function () {
 
   const genericObjects = [new GenericObject({ x: 0, y: 0 })];
 
+  const enemies = [new Enemy( //aqui metes 1 objeto con 2 itesm
+    {position:{
+      x:800,
+      y:100
+    } ,
+    speed:{
+      x:-0.3,
+      y:0
+    } 
+})
+]
+
+
+
   document.getElementById("start-button").onclick = function () {
     if (!requestId) {
       ;
@@ -32,6 +46,11 @@ window.onload = function () {
     drawPlatforms();
 
     player.update();
+
+    //enemy rendering
+    enemies.forEach((enemy) =>{
+      enemy.update();
+    })
 
     //controls section
     //rigth and left

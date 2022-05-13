@@ -177,3 +177,43 @@ class GenericObject {
     );
   }
 }
+
+
+class Enemy {
+  constructor({ position, speed }) {//aqui metes 1 objecto con items.
+    this.position = {
+      x: position.x,
+      y: position.y
+    }
+
+    this.speed = {
+      x: speed.x,
+      y: speed.y
+    }
+
+    this.width = 50
+    this.height = 50
+  }
+
+  draw() {
+    ctx.fillStyle = 'red'
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+  }
+
+  update() {
+    this.draw()
+    this.position.x += this.speed.x
+    this.position.y += this.speed.y
+
+ //gravity section
+ if (
+  this.position.y + this.height + this.speed.y <=
+  canvas.height
+) {
+  this.speed.y += gravity;
+}
+
+
+  }
+}
+
