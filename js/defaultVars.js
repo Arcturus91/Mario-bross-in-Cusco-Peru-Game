@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 
 let frames=0
 let points = 0
+let lastKey
 
 
 let scrollOffset = 0

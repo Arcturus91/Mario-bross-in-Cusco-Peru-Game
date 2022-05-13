@@ -37,7 +37,7 @@ window.onload = function () {
     //rigth and left
     if (keys.right.pressed && player.position.x < 400) {
       player.speed.x = player.velocity;
-      player.currentSprite = player.sprites.run.right
+      player.currentSprite = player.sprites.run.right;
     } else if (
       (keys.left.pressed && player.position.x > 100) ||
       (keys.left.pressed && player.position.x > 0)
@@ -69,15 +69,6 @@ window.onload = function () {
       }
     }
 
-    console.log(player.position.x , player.speed.x);
-    //up section
-    /*     if (keys.up.pressed && player.position.y > 0) {
-        player.speed.y += 5;
-      } 
-       else {
-        player.speed.y = 0;
-      } */
-
     //platform collision detection section
 
     platforms.forEach((platform) => {
@@ -91,6 +82,42 @@ window.onload = function () {
         player.speed.y = 0;
       }
     });
+
+    //sprite switching
+    if (
+      keys.right.pressed &&
+      lastKey === "right" &&
+      player.currentSprite !== player.sprites.run.right
+    ) {
+      player.framesImg=58
+      player.currentSprite = player.sprites.run.right;
+      player.currentCropWidth = player.sprites.run.cropWidth;
+      player.width = player.sprites.run.width;
+    } else if (
+      !keys.right.pressed &&
+      lastKey === "right" &&
+      player.currentSprite !== player.sprites.stand.right
+    ) {
+      player.currentSprite = player.sprites.stand.right;
+      player.currentCropWidth = player.sprites.stand.cropWidth;
+      player.width = player.sprites.stand.width;
+    } else if (
+      keys.left.pressed &&
+      lastKey === "left" &&
+      player.currentSprite !== player.sprites.run.left
+    ) {
+      player.currentSprite = player.sprites.run.left;
+      player.currentCropWidth = player.sprites.run.cropWidth;
+      player.width = player.sprites.run.width;
+    } else if (
+      !keys.left.pressed &&
+      lastKey === "left" &&
+      player.currentSprite !== player.sprites.stand.left
+    ) {
+      player.currentSprite = player.sprites.stand.left;
+      player.currentCropWidth = player.sprites.stand.cropWidth;
+      player.width = player.sprites.stand.width;
+    } 
 
     //loose condition
     if (player.position.y > canvas.height) {
@@ -151,11 +178,6 @@ window.onload = function () {
 
       item.draw();
     });
-
-    /* if((platforms.length % 100 === 0)){
-platforms.splice(0,10)
-console.log(platforms);
-  }; Porqué no borra los primeros?*/
   }
 
   if (requestId) {
@@ -165,25 +187,24 @@ console.log(platforms);
   addEventListener("keydown", (event) => {
     switch (event.keyCode) {
       case 65:
-        console.log("this is left");
+        ;
         keys.left.pressed = true;
+        lastKey = "left";
         break;
 
       case 83:
-        console.log("this is down");
+       ;
 
         break;
 
       case 68:
-        console.log("this is right");
-        console.log(player.currentSprite)
+        ;
         keys.right.pressed = true;
-        player.currentSprite = player.sprites.run.right
-        console.log(player.currentSprite)
+        lastKey = "right";
         break;
 
       case 87:
-        console.log("this is key up down");
+        ;
         player.speed.y -= 20;
         break;
     }
@@ -192,18 +213,17 @@ console.log(platforms);
   addEventListener("keyup", (event) => {
     switch (event.keyCode) {
       case 65:
-        console.log("this is left");
+       ;
         keys.left.pressed = false;
         break;
 
       case 83:
-        console.log("this is down");
+        ;
         break;
 
       case 68:
-        console.log("this is right");
+       ;
         keys.right.pressed = false;
-        
         break;
 
       case 87:

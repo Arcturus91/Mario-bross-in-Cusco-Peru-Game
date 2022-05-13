@@ -50,30 +50,37 @@ class Player {
       y: 0,
     };
 
-  this.framesImg =0
+    this.framesImg = 0;
 
-  this.sprites = {
-    stand:{
-      right:"images/spriteStandRight.png"
-    },
-    run:{
-      right:"images/spriteRunRight.png"
-    }
-  }
-  this.currentSprite = this.sprites.stand.right
-  //mayor reto
+    this.sprites = {
+      stand: {
+        right: "images/spriteStandRight.png",
+        left: "images/spriteStandLeft.png",
+        cropWidth: 177,
+        width: 66,
+      },
+      run: {
+        right: "images/spriteRunRight.png",
+        left: "images/spriteRunLeft.png",
+        cropWidth: 341,
+        width: 127.875,
+      },
+    };
+    this.currentSprite = this.sprites.stand.right;
+    this.currentCropWidth = this.sprites.stand.cropWidth;
+    //mayor reto
 
-  this.img = new Image();
-  this.img.src = this.currentSprite 
-
+    this.img = new Image();
+    this.img.src = this.currentSprite;
+    this.img.width = this.currentCropWidth;
   }
   draw() {
     ctx.drawImage(
       this.img,
-177*this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego 
-0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
-177,
-400,
+      this.img.width * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
+      this.img.width,
+      400,
 
       this.position.x,
       this.position.y,
@@ -83,9 +90,25 @@ class Player {
   }
 
   update() {
+
+    this.img.src = this.currentSprite;
+    this.img.width = this.currentCropWidth;
+
     this.framesImg++;
-    if(this.framesImg > 28){
-      this.framesImg = 0
+//FRAME control for standing
+    if (
+      this.framesImg > 59 &&
+      (this.currentSprite === this.sprites.stand.right||this.currentSprite === this.sprites.stand.left)
+    ) {
+      this.framesImg = 0;
+    } 
+    //FRAME control for running
+    else if (
+      this.framesImg > 29 &&
+      (this.currentSprite === this.sprites.run.right ||
+        this.currentSprite === this.sprites.run.left )
+    ) {
+      this.framesImg = 0;
     } /*  the amount of pictures you have) */
     this.draw();
     this.position.y += this.speed.y;
