@@ -7,7 +7,7 @@ window.onload = function () {
 
   document.getElementById("start-button").onclick = function () {
     if (!requestId) {
-      console.log("funciono");
+      ;
       startGame();
     }
   };
@@ -15,12 +15,12 @@ window.onload = function () {
   function startGame() {
     requestId = requestAnimationFrame(updateGame);
   }
-
+ 
   //
 
   function updateGame() {
     frames++;
-
+    console.log(player.framesImg)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw();
@@ -137,7 +137,7 @@ window.onload = function () {
 
   function generatePlatforms() {
     let positionRandom = 100;
-    let positionFloor = 550;
+    let positionFloor = 530;
 
     if (frames < 5) {
       let platform1 = new Platform({
@@ -150,24 +150,23 @@ window.onload = function () {
     if (!(frames % 20 === 0)) {// Solo se construye en cada frame que es multiplo de 20.
       return true;
     }
-
+//positionRandom es para las X
     positionRandom +=
-      frames * 15 + Math.floor(Math.random() * (canvas.width * 0.6));
-    positionFloor = 550;
+      frames * 15 + Math.floor(Math.random() * (canvas.width * 0.7));
+    positionFloor = 530;
 
     //for the floor
 
     const platform2 = new Platform({
-      x: frames*10 + 100+ 3*points ,
-      y: positionFloor,
+      x: frames*10 + 100+ 3*points +Math.floor(Math.random() * (canvas.width * 0.7)),
+      y: positionFloor
 
     });
 
-    console.log(platform2,frames,points)
 
     //for the platforms in the air
     let positionRandomY = 0;
-    positionRandomY += Math.floor(Math.random() * (canvas.height * 0.7));
+    positionRandomY += Math.floor(Math.random() * (canvas.height * 0.5)); + 300 // averigua como hacer para que no salgan tan pegados arriba.
     const platform1 = new Platform({ x: positionRandom, y: positionRandomY });
 
     platforms.push(platform2, platform1);

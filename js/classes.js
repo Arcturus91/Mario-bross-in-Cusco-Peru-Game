@@ -50,12 +50,12 @@ class Player {
       y: 0,
     };
 
-    this.framesImg = 0;
+    this.framesImg = 0
 
     this.sprites = {
       stand: {
-        right: "images/spriteStandRight.png",
-        left: "images/spriteStandLeft.png",
+        right: "images/standingLlamaRight2.png",
+        left: "images/standingLlamaLeft3.png",
         cropWidth: 177,
         width: 66,
       },
@@ -80,7 +80,7 @@ class Player {
       this.img.width * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
       0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
       this.img.width,
-      400,
+      300,
 
       this.position.x,
       this.position.y,
@@ -138,10 +138,10 @@ class Platform {
 
     this.img = new Image();
 
-    this.img.src = "images/platformF.png";
-    this.width = this.img.width / 2;
+    this.img.src = "images/platformFF.png";
+    this.width = this.img.width /4
 
-    this.height = this.img.height / 3.5;
+    this.height = this.img.height /4
   }
   draw() {
     ctx.drawImage(
