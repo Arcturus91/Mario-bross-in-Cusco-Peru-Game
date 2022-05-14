@@ -60,8 +60,8 @@ class Player {
         width: 66,
       },
       run: {
-        right: "images/spriteRunRight.png",
-        left: "images/spriteRunLeft.png",
+        right: "images/runLlamaRight.png",
+        left: "images/runLlamaLeft.png",
         cropWidth: 341,
         width: 127.875,
       },
@@ -97,14 +97,14 @@ class Player {
     this.framesImg++;
 //FRAME control for standing
     if (
-      this.framesImg > 59 &&
+      this.framesImg >= 58 &&
       (this.currentSprite === this.sprites.stand.right||this.currentSprite === this.sprites.stand.left)
     ) {
       this.framesImg = 0;
     } 
     //FRAME control for running
     else if (
-      this.framesImg > 29 &&
+      this.framesImg > 31 &&
       (this.currentSprite === this.sprites.run.right ||
         this.currentSprite === this.sprites.run.left )
     ) {
@@ -180,7 +180,7 @@ class GenericObject {
 
 
 class Enemy {
-  constructor({ position, speed }) {//aqui metes 1 objecto con items.
+  constructor({ position, speed }) {//aqui metes 1 object1o con items.
     this.position = {
       x: position.x,
       y: position.y
@@ -191,17 +191,46 @@ class Enemy {
       y: speed.y
     }
 
-    this.width = 50
+    this.width = 43.33
     this.height = 50
+
+    this.framesImg = 0
+
+    this.img = new Image()
+    this.img.src = "images/spriteGoomba.png"
+
+    
   }
 
   draw() {
-    ctx.fillStyle = 'red'
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+  
+
+    ctx.drawImage(
+      this.img,
+      130 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
+      130,
+      150,
+
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
+  
+  
   }
 
   update() {
+
+    this.framesImg++
+
+    if(this.framesImg > 59){
+      this.framesImg = 0
+    }
+
     this.draw()
+  
     this.position.x += this.speed.x
     this.position.y += this.speed.y
 
@@ -216,4 +245,8 @@ class Enemy {
 
   }
 }
+
+
+
+
 

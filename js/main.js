@@ -1,3 +1,5 @@
+//grabado hasta aqui!! 19:21
+
 window.onload = function () {
   const bg = new Background(0);
 
@@ -8,7 +10,7 @@ window.onload = function () {
   const enemies = [new Enemy( //aqui metes 1 objeto con 2 itesm
     {position:{
       x:800,
-      y:100
+      y:-500
     } ,
     speed:{
       x:-0.3,
@@ -16,7 +18,6 @@ window.onload = function () {
     } 
 })
 ]
-
 
 
   document.getElementById("start-button").onclick = function () {
@@ -34,7 +35,7 @@ window.onload = function () {
 
   function updateGame() {
     frames++;
-    console.log(player.framesImg)
+   
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw();
@@ -45,14 +46,37 @@ window.onload = function () {
     generatePlatforms();
     drawPlatforms();
 
-    player.update();
+    
 
     //enemy rendering
-    enemies.forEach((enemy) =>{
+    enemies.forEach((enemy,enemy_index) =>{
       enemy.update();
+
+      if(collisionTop(
+        {
+          object1:player,
+          object2:enemy
+        }
+      )){
+        player.speed.y -=40
+        setTimeout(()=>{enemies.splice(enemy_index,1)},1)
+        
+      } else if (
+        player.position.x + player.width >= enemy.position.x &&
+        player.position.y + player.height >= enemy.position.y &&
+        player.position.x <= enemy.position.x +enemy.width 
+      ){gameOver()
+
+      }
+
+
     })
 
-    //controls section
+
+    player.update();
+
+
+    //controls section - scrolling code
     //rigth and left
     if (keys.right.pressed && player.position.x < 400) {
       player.speed.x = player.velocity;
@@ -75,6 +99,11 @@ window.onload = function () {
         genericObjects.forEach((genericObject) => {
           genericObject.position.x -= player.velocity * 0.66;
         });
+
+        enemies.forEach((enemy) => {
+          enemy.position.x -= player.velocity;
+        });
+
       } else if (keys.left.pressed) {
         bg.x += 5;
         scrollOffset -= player.velocity;
@@ -85,21 +114,32 @@ window.onload = function () {
         genericObjects.forEach((genericObject) => {
           genericObject.position.xd += player.velocity * 0.66;
         });
+
+        enemies.forEach((enemy) => {
+          enemy.position.x += player.velocity;
+        });
+
+        
       }
     }
 
     //platform collision detection section
 
     platforms.forEach((platform) => {
-      if (
-        player.position.y + player.height <= platform.position.y &&
-        player.position.y + player.height + player.speed.y >=
-          platform.position.y &&
-        player.position.x + player.width >= platform.position.x &&
-        player.position.x <= platform.position.x + platform.width
-      ) {
+  if (isOnTopOfPlatform(
+    {object:player,platform:platform}
+  )) {
         player.speed.y = 0;
-      }
+      } 
+
+      enemies.forEach((enemy) => {
+        if(isOnTopOfPlatform({object:enemy,platform:platform})){
+          enemy.speed.y = 0;
+        }
+      })
+
+
+
     });
 
     //sprite switching
@@ -177,11 +217,13 @@ window.onload = function () {
     //for the floor
 
     const platform2 = new Platform({
-      x: frames*10 + 100+ 3*points +Math.floor(Math.random() * (canvas.width * 0.7)),
+      x: frames*10 + 100+ 3*points,
       y: positionFloor
 
     });
 
+//el valor correcto para el piso :
+//x: frames*10 + 100+ 3*points +Math.floor(Math.random() * (canvas.width * 0.7)),
 
     //for the platforms in the air
     let positionRandomY = 0;

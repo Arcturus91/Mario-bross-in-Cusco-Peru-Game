@@ -1,6 +1,26 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+
+function isOnTopOfPlatform({object,platform}){
+  return (  object.position.y + object.height <= platform.position.y &&
+    object.position.y + object.height + object.speed.y >=
+      platform.position.y &&
+    object.position.x + object.width >= platform.position.x &&
+    object.position.x <= platform.position.x + platform.width)
+}
+
+function collisionTop({object1,object2}){
+
+  return (  object1.position.y + object1.height <= object2.position.y &&
+    object1.position.y + object1.height + object1.speed.y >=
+      object2.position.y &&
+    object1.position.x + object1.width >= object2.position.x &&
+    object1.position.x <= object2.position.x + object2.width)
+}
+
+
+
 let frames=0
 let points = 0
 let lastKey
@@ -66,3 +86,5 @@ let requestId
       y: 300,
     }),
   ]; */
+
+
