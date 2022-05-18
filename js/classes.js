@@ -144,7 +144,7 @@ class Player {
 }
 
 class Platform {
-  constructor({ x, y }) {
+  constructor({ x, y,source,block}) {
     this.position = {
       x: x,
       y: y,
@@ -152,10 +152,12 @@ class Platform {
 
     this.img = new Image();
 
-    this.img.src = "images/platformFF.png";
-    this.width = this.img.width / 4;
+    this.img.src = source;
 
-    this.height = this.img.height / 4;
+    this.width = 660 / 4;
+
+    this.height = 200 / 4;
+    this.block = block
   }
   draw() {
     ctx.drawImage(
@@ -167,6 +169,8 @@ class Platform {
     );
   }
 }
+
+
 
 class GenericObject {
   constructor({ x, y }) {
@@ -261,7 +265,7 @@ class Enemy {
       this.distance.travel = 0;
       this.speed.x = -this.speed.x;
     }
-    console.log(this.distance.travel);
+    
   }
 }
 

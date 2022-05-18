@@ -5,6 +5,79 @@ window.onload = function () {
 
   const player = new Player();
 
+  let platImage = "images/platformFF.png";
+
+  let blockImage = "images/blockTri.png";
+
+  const platforms = [
+    new Platform({
+      x: 100,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 400,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 700,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 1200,
+      y: 300,
+      source: platImage,
+    }),new Platform({
+      x: 700,
+      y: 330,
+      source: platImage,
+    }),
+    new Platform({
+      x: 300,
+      y: 230,
+      source: platImage,
+    }),
+    new Platform({
+      x: 100+2*canvas.width,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 400+2*canvas.width,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 700+2*canvas.width,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 1200+2*canvas.width,
+      y: 300,
+      source: platImage,
+    }),new Platform({
+      x: 700+2*canvas.width,
+      y: 330,
+      source: platImage,
+    }),
+    new Platform({
+      x: 300+2*canvas.width,
+      y: 230,
+      source: platImage,
+    }),
+  ];
+
+  /* Prefiero no tener bloques:
+  new Platform({
+      x: 400,
+      y: 300,
+      source: blockImage,
+      block: true,
+    }) */
+
   const genericObjects = [new GenericObject({ x: 0, y: 0 })];
 
   const enemies = [
@@ -86,7 +159,6 @@ window.onload = function () {
       genericObject.draw();
     });
 
-    generatePlatforms();
     drawPlatforms();
 
     //enemy rendering
@@ -214,8 +286,6 @@ window.onload = function () {
       });
     });
 
-    console.log(particles);
-
     //sprite switching
     if (player.speed.y === 0) {
       if (
@@ -270,61 +340,13 @@ window.onload = function () {
     requestId = undefined;
   }
 
-  function generatePlatforms() {
-    let positionRandom = 100;
-    let positionFloor = 530;
-
-    if (frames < 5) {
-      let platform1 = new Platform({
-        x: positionRandom,
-        y: positionFloor,
-      });
-      let platform3 = new Platform({
-        x: positionRandom + 300,
-        y: positionFloor,
-      });
-      platforms.push(platform1, platform3);
-    }
-
-    if (!(frames % 20 === 0)) {
-      // Solo se construye en cada frame que es multiplo de 20.
-      return true;
-    }
-    //positionRandom es para las X
-    positionRandom +=
-      frames * 15 + Math.floor(Math.random() * (canvas.width * 0.7));
-    positionFloor = 530;
-
-    //for the floor
-
-    const platform2 = new Platform({
-      x:
-        frames * 10 +
-        100 +
-        3 * points +
-        Math.floor(Math.random() * (canvas.width * 0.7)),
-      y: positionFloor,
-    });
-
-    //el valor correcto para el piso :
-    //x: frames*10 + 100+ 3*points +Math.floor(Math.random() * (canvas.width * 0.7)),
-
-    //for the platforms in the air
-    let positionRandomY = 0;
-    positionRandomY += Math.floor(Math.random() * (canvas.height * 0.5));
-    +300; // averigua como hacer para que no salgan tan pegados arriba.
-    const platform1 = new Platform({ x: positionRandom, y: positionRandomY });
-
-    platforms.push(platform2, platform1);
-  }
-
   function drawPlatforms() {
     platforms.forEach((item, index_platform) => {
-      if (item.position.x + item.width <= 0) {
+      /*       if (item.position.x + item.width <= 0) {
         points++;
 
         platforms.splice(index_platform, 1);
-      }
+      } */
 
       item.draw();
     });

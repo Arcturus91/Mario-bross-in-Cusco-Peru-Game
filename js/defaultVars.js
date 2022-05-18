@@ -59,6 +59,12 @@ const platforms = [
 
 let requestId 
 
+/* platform1 = new Platform({
+  x: positionRandom,
+  y: positionFloor,
+},platImage); */
+
+
 /* 
     const beginningPlat = [new Platform({
         x: 30,
@@ -67,8 +73,7 @@ let requestId
       new Platform({
         x: 150*2,
         y: 550,
-      })] */
-/* 
+      })] ,
     new Platform({
       x: 130,
       y: 300,
