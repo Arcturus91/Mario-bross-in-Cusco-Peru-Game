@@ -19,6 +19,14 @@ function collisionTop({object1,object2}){
     object1.position.x <= object2.position.x + object2.width)
 }
 
+function isOnTopOfPlatformCircle({object,platform}){
+  return (  object.position.y + object.radius <= platform.position.y &&
+    object.position.y + object.radius  + object.speed.y >=
+      platform.position.y &&
+    object.position.x + object.radius >= platform.position.x &&
+    object.position.x <= platform.position.x + platform.width)
+}
+
 
 
 let frames=0
