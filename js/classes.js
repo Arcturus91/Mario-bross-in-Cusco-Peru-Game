@@ -144,7 +144,10 @@ class Player {
 }
 
 class Platform {
-  constructor({ x, y,source,block}) {
+  constructor({ x, y,source,picDim ={
+    w:165,
+    h:50
+  }}) {
     this.position = {
       x: x,
       y: y,
@@ -154,10 +157,10 @@ class Platform {
 
     this.img.src = source;
 
-    this.width = 660 / 4;
+    this.width = picDim.w;
 
-    this.height = 200 / 4;
-    this.block = block
+    this.height = picDim.h;
+    
   }
   draw() {
     ctx.drawImage(
@@ -181,9 +184,9 @@ class GenericObject {
 
     this.img = new Image();
 
-    this.img.src = "images/hills.png";
-    this.width = 7545;
-    this.height = 592;
+    this.img.src = "images/machuP.png";
+    this.width = 614;
+    this.height = 650;
   }
   draw() {
     ctx.drawImage(
@@ -215,14 +218,17 @@ class Enemy {
       x: speed.x,
       y: speed.y,
     };
-
-    this.width = 43.33;
-    this.height = 50;
+    this.scale = 0.7;
+    this.width = 130*this.scale
+    this.height = 190*this.scale
 
     this.framesImg = 0;
+    this.now = now;
+    this.then = then;
+    this.count = count;
 
     this.img = new Image();
-    this.img.src = "images/spriteGoomba.png";
+    this.img.src = "images/soldier1.png";
 
     this.distance = distance;
   }
@@ -230,10 +236,10 @@ class Enemy {
   draw() {
     ctx.drawImage(
       this.img,
-      130 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      130* this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
       0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
       130,
-      150,
+      190,
 
       this.position.x,
       this.position.y,
@@ -243,12 +249,17 @@ class Enemy {
   }
 
   update() {
-    this.framesImg++;
-
-    if (this.framesImg > 59) {
-      this.framesImg = 0;
+    this.now = Date.now();
+    let difference = this.now - this.then;
+    if(difference >100){
+      this.count++;
+      this.then = this.now;
+      this.framesImg++;
+    
+      if (this.framesImg >= 9) {
+        this.framesImg = 0;
+      }
     }
-
     this.draw();
 
     this.position.x += this.speed.x;
@@ -313,5 +324,156 @@ class Particle {
     if (this.position.y + this.radius + this.speed.y <= canvas.height) {
       this.speed.y += gravity * 0.2;
     }
+  }
+}
+
+
+class FoodP {
+  constructor({
+    position,
+    speed}, // default value
+  ) {
+    //aqui metes 1 object1o con items.
+    this.position = {
+      x: position.x,
+      y: position.y,
+    };
+
+    this.speed = {
+      x: speed.x,
+      y: speed.y,
+    };
+this.scale = 0.7
+    this.width = 200*this.scale;
+    this.height = 200*this.scale;
+
+    this.framesImg = 0;
+    this.now = now;
+    this.then = then;
+    this.count = count;
+
+    this.img = new Image();
+    this.img.src = "images/lomito.png";
+    //"/images/chiliSprite1.png"; para el chile
+
+  }
+
+  draw() {
+    ctx.drawImage(
+      this.img,
+      200 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
+      200,
+      200,
+
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
+  }
+
+  update() {
+    this.now = Date.now();
+    let difference = this.now - this.then;
+    if(difference >200){
+      this.count++;
+      this.then = this.now;
+      this.framesImg++;
+    
+      if (this.framesImg >= 9) {
+        this.framesImg = 0;
+      }
+    }
+
+    this.draw();
+
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+
+    //gravity section
+    if (this.position.y + this.height + this.speed.y <= canvas.height) {
+      this.speed.y += gravity;
+    }
+
+    
+  }
+}
+
+
+
+
+
+class FoodC {
+  constructor({
+    position,
+    speed}, // default value
+  ) {
+    //aqui metes 1 object1o con items.
+    this.position = {
+      x: position.x,
+      y: position.y,
+    };
+
+    this.speed = {
+      x: speed.x,
+      y: speed.y,
+    };
+
+    this.width = 60;
+    this.height = 95;
+
+    this.framesImg = 0;
+    this.now = now;
+    this.then = then;
+    this.count = count;
+
+    this.img = new Image();
+    this.img.src = "/images/chiliSprite1.png";
+    //"/images/chiliSprite1.png"; para el chile
+
+  }
+
+  draw() {
+    ctx.drawImage(
+      this.img,
+      60 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
+      60,
+      95,
+
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
+
+
+  }
+
+  update() {
+
+this.now = Date.now();
+let difference = this.now - this.then;
+if(difference >100){
+  this.count++;
+  this.then = this.now;
+  this.framesImg++;
+
+  if (this.framesImg >= 13) {
+    this.framesImg = 0;
+  }
+}
+    this.draw();
+
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+
+    //gravity section
+    if (this.position.y + this.height + this.speed.y <= canvas.height) {
+      this.speed.y += gravity;
+    }
+
+    
   }
 }

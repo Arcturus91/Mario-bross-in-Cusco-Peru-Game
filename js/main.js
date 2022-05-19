@@ -5,15 +5,71 @@ window.onload = function () {
 
   const player = new Player();
 
-  let platImage = "images/platformFF.png";
+  const foodsP = [
+    new FoodP({
+      position: {
+        x: 800,
+        y: 200,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+    }),
+  ];
 
-  let blockImage = "images/blockTri.png";
+  const foodsC = [
+    new FoodC({
+      position: {
+        x: 300,
+        y: -400,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+    }),
+  ];
+
+  let platImage = "images/platformFF.png";
+  let platLongImage = "images/platformLong.png";
 
   const platforms = [
     new Platform({
-      x: 100,
-      y: 530,
-      source: platImage,
+      x: 70,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
+    new Platform({
+      x: 1150,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
+    new Platform({
+      x: 2070,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
+    new Platform({
+      x: 1570,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
     }),
     new Platform({
       x: 400,
@@ -21,7 +77,7 @@ window.onload = function () {
       source: platImage,
     }),
     new Platform({
-      x: 700,
+      x: 800,
       y: 530,
       source: platImage,
     }),
@@ -29,7 +85,8 @@ window.onload = function () {
       x: 1200,
       y: 300,
       source: platImage,
-    }),new Platform({
+    }),
+    new Platform({
       x: 700,
       y: 330,
       source: platImage,
@@ -40,51 +97,125 @@ window.onload = function () {
       source: platImage,
     }),
     new Platform({
-      x: 100+2*canvas.width,
+      x: 100 + 2 * canvas.width,
       y: 530,
       source: platImage,
     }),
     new Platform({
-      x: 400+2*canvas.width,
+      x: 400 + 2 * canvas.width,
       y: 530,
       source: platImage,
     }),
     new Platform({
-      x: 700+2*canvas.width,
+      x: 700 + 2 * canvas.width,
       y: 530,
       source: platImage,
     }),
     new Platform({
-      x: 1200+2*canvas.width,
+      x: 1200 + 2 * canvas.width,
       y: 300,
       source: platImage,
-    }),new Platform({
-      x: 700+2*canvas.width,
+    }),
+    new Platform({
+      x: 800 + 2 * canvas.width,
       y: 330,
       source: platImage,
     }),
     new Platform({
-      x: 300+2*canvas.width,
+      x: 300 + 2 * canvas.width,
       y: 230,
+      source: platImage,
+    }),
+    new Platform({
+      x: 1500,
+      y: 230,
+      source: platImage,
+    }),
+    new Platform({
+      x: 400 + 2 * canvas.width,
+      y: 330,
+      source: platImage,
+    }),
+    new Platform({
+      x: 1000 + 2 * canvas.width,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
+    new Platform({
+      x: 570 + 3 * canvas.width,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
+    new Platform({
+      x: 400 + 3 * canvas.width,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 800,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: 600 + 3 * canvas.width,
+      y: 300,
+      source: platImage,
+    }),
+    new Platform({
+      x: 570 + 4 * canvas.width,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
+    new Platform({
+      x: 4 * canvas.width,
+      y: 230,
+      source: platImage,
+    }),
+    new Platform({
+      x: 100 + 4 * canvas.width,
+      y: 530,
+      source: platImage,
+    }),
+    new Platform({
+      x: -200 + 4 * canvas.width,
+      y: 450,
       source: platImage,
     }),
   ];
 
-  /* Prefiero no tener bloques:
-  new Platform({
-      x: 400,
-      y: 300,
-      source: blockImage,
-      block: true,
-    }) */
-
-  const genericObjects = [new GenericObject({ x: 0, y: 0 })];
+  const genericObjects = [new GenericObject({ x: 600, y: 100 }),new GenericObject({ x: 600+canvas.width, y: 100 })];
 
   const enemies = [
     new Enemy({
       //aqui metes 1 objeto con 2 itesm
       position: {
-        x: 800,
+        x: 400,
+        y: -500,
+      },
+      speed: {
+        x: -0.3, //velocidad del enemigo
+        y: 0,
+      },
+      distance: {
+        limit: 200, //limite de distancia que puede recorrer
+        travel: 0,
+      },
+    }),
+    new Enemy({
+      position: {
+        x: 750,
         y: -500,
       },
       speed: {
@@ -92,25 +223,15 @@ window.onload = function () {
         y: 0,
       },
       distance: {
-        limit: 200,
+        limit: 100,
         travel: 0,
       },
     }),
+
     new Enemy({
       //aqui metes 1 objeto con 2 itesm
       position: {
-        x: 500,
-        y: -500,
-      },
-      speed: {
-        x: -0.3,
-        y: 0,
-      },
-    }),
-    new Enemy({
-      //aqui metes 1 objeto con 2 itesm
-      position: {
-        x: 400,
+        x: 1200,
         y: -500,
       },
       speed: {
@@ -125,14 +246,20 @@ window.onload = function () {
     new Enemy({
       //aqui metes 1 objeto con 2 itesm
       position: {
-        x: 1000,
+        x: 400 + canvas.width,
         y: -500,
       },
       speed: {
-        x: -0.3,
+        x: -0.1,
         y: 0,
       },
+      distance: {
+        limit: 200,
+        travel: 0,
+      },
     }),
+
+    //fin
   ];
 
   const particles = [];
@@ -160,6 +287,40 @@ window.onload = function () {
     });
 
     drawPlatforms();
+
+    //power up pollo
+    foodsP.forEach((food,index_food) => {
+      if (
+        objectsTouch({
+          object1: player,
+          object2: food,
+        })
+      ) {
+        setTimeout(() => {
+          foodsP.splice(index_food, 1);
+        }, 1);
+
+      } else {
+        food.update();
+      }
+      
+    });
+//power up chile
+    foodsC.forEach((food, index_food) => {
+      if (
+        objectsTouch({
+          object1: player,
+          object2: food,
+        })
+      ) {
+        setTimeout(() => {
+          foodsC.splice(index_food, 1);
+        }, 1);
+
+      } else {
+        food.update();
+      }
+    });
 
     //enemy rendering
     enemies.forEach((enemy, enemy_index) => {
@@ -192,9 +353,10 @@ window.onload = function () {
           enemies.splice(enemy_index, 1);
         }, 1);
       } else if (
-        player.position.x + player.width >= enemy.position.x &&
+        player.position.x + player.width - 15 >= enemy.position.x &&
         player.position.y + player.height >= enemy.position.y &&
-        player.position.x <= enemy.position.x + enemy.width
+        player.position.x + 15 <= enemy.position.x + enemy.width &&
+        player.position.y <= enemy.position.y + enemy.height
       ) {
         gameOver();
       }
@@ -236,6 +398,17 @@ window.onload = function () {
         particles.forEach((particle) => {
           particle.position.x -= player.velocity;
         });
+
+foodsC.forEach((food)=>{
+  food.position.x -= player.velocity;
+})
+
+
+foodsP.forEach((food)=>{
+  food.position.x -= player.velocity;
+})
+
+
       } else if (keys.left.pressed) {
         bg.x += 5;
         scrollOffset -= player.velocity;
@@ -257,11 +430,16 @@ window.onload = function () {
       }
     }
 
+    if (player.position.y < 0) {
+      player.speed.y += 1;
+    }
+
     //platform collision detection section
 
     platforms.forEach((platform) => {
       if (isOnTopOfPlatform({ object: player, platform: platform })) {
         player.speed.y = 0;
+        console.log(platform.position.x, platform.position.y);
       }
 
       particles.forEach((particle, index_particle) => {
@@ -282,6 +460,18 @@ window.onload = function () {
       enemies.forEach((enemy) => {
         if (isOnTopOfPlatform({ object: enemy, platform: platform })) {
           enemy.speed.y = 0;
+        }
+      });
+
+      foodsP.forEach((food) => {
+        if (isOnTopOfPlatform({ object: food, platform: platform })) {
+          food.speed.y = 0;
+        }
+      });
+
+      foodsC.forEach((food) => {
+        if (isOnTopOfPlatform({ object: food, platform: platform })) {
+          food.speed.y = 0;
         }
       });
     });
@@ -329,6 +519,11 @@ window.onload = function () {
       gameOver();
     }
 
+    //win condition
+    if (scrollOffset >= 5800) {
+      win();
+    }
+
     if (requestId) {
       requestAnimationFrame(updateGame); //v1.2
     }
@@ -337,6 +532,18 @@ window.onload = function () {
   function gameOver() {
     ctx.font = "50px Arial";
     ctx.fillText("Perdiste, refresh the page", 400, 400, 400, 400);
+    requestId = undefined;
+  }
+
+  function win() {
+    ctx.font = "50px Arial";
+    ctx.fillText(
+      "Congratulations, you defended the entrance! Now lets go inside",
+      400,
+      400,
+      400,
+      400
+    );
     requestId = undefined;
   }
 
