@@ -52,26 +52,41 @@ class Player {
     };
 
     this.framesImg = 0;
+    this.invincible = false
+    this.lifes = 100
 
     this.sprites = {
       stand: {
         right: "images/spriteMarioStandRight.png",
         left: "images/spriteMarioStandLeft.png",
-        cropWidth:398,
+        fireFlower: {
+          right: "images/spriteFireFlowerStandRight.png",
+          left: "images/spriteFireFlowerStandLeft.png",
+        },
+        cropWidth: 398,
         width: 398 * this.scale,
       },
       run: {
         right: "images/spriteMarioRunRight.png",
         left: "images/spriteMarioRunLeft.png",
+        fireFlower: {
+          right: "images/spriteFireFlowerRunRight.png",
+          left: "images/spriteFireFlowerRunLeft.png",
+        },
+
         cropWidth: 398,
-        width:  398 * this.scale,
+        width: 398 * this.scale,
       },
       jump: {
         right: "images/spriteMarioJumpRight.png",
         left: "images/spriteMarioJumpLeft.png",
+        fireFlower: {
+          right: "images/spriteFireFlowerJumpRight.png",
+          left: "images/spriteFireFlowerJumpLeft.png",
+        },
         cropWidth: 398,
-        width:  398 * this.scale,
-      }
+        width: 398 * this.scale,
+      },
     };
     this.currentSprite = this.sprites.stand.right;
     this.currentCropWidth = this.sprites.stand.cropWidth;
@@ -80,6 +95,9 @@ class Player {
     this.img = new Image();
     this.img.src = this.currentSprite;
     this.img.width = this.currentCropWidth;
+    this.powerUps = {
+      fireFlower: false,
+    };
   }
   draw() {
     ctx.drawImage(
@@ -105,7 +123,10 @@ class Player {
     if (
       this.framesImg > 58 &&
       (this.currentSprite === this.sprites.stand.right ||
-        this.currentSprite === this.sprites.stand.left)
+        this.currentSprite === this.sprites.stand.left||
+        this.currentSprite === this.sprites.stand.fireFlower.right||
+        this.currentSprite === this.sprites.stand.fireFlower.left
+        )
     ) {
       this.framesImg = 0;
     }
@@ -113,16 +134,21 @@ class Player {
     else if (
       this.framesImg > 28 &&
       (this.currentSprite === this.sprites.run.right ||
-        this.currentSprite === this.sprites.run.left)
+        this.currentSprite === this.sprites.run.left ||
+        this.currentSprite === this.sprites.run.fireFlower.left||
+        this.currentSprite === this.sprites.run.fireFlower.right)
     ) {
       this.framesImg = 0;
-    } else if(this.currentSprite === this.sprites.jump.right ||
-      this.currentSprite === this.sprites.jump.left){
-        this.framesImg = 0;
-      }
-    
-    
-    
+    } else if (
+      this.currentSprite === this.sprites.jump.right ||
+      this.currentSprite === this.sprites.jump.left||
+      this.currentSprite === this.sprites.jump.fireFlower.left||
+      this.currentSprite === this.sprites.jump.fireFlower.right
+      
+    ) {
+      this.framesImg = 0;
+    }
+
     /*  the amount of pictures you have) */
     this.draw();
     this.position.y += this.speed.y;
@@ -144,10 +170,15 @@ class Player {
 }
 
 class Platform {
-  constructor({ x, y,source,picDim ={
-    w:165,
-    h:50
-  }}) {
+  constructor({
+    x,
+    y,
+    source,
+    picDim = {
+      w: 165,
+      h: 50,
+    },
+  }) {
     this.position = {
       x: x,
       y: y,
@@ -160,7 +191,6 @@ class Platform {
     this.width = picDim.w;
 
     this.height = picDim.h;
-    
   }
   draw() {
     ctx.drawImage(
@@ -172,8 +202,6 @@ class Platform {
     );
   }
 }
-
-
 
 class GenericObject {
   constructor({ x, y }) {
@@ -219,8 +247,8 @@ class Enemy {
       y: speed.y,
     };
     this.scale = 0.7;
-    this.width = 130*this.scale
-    this.height = 190*this.scale
+    this.width = 130 * this.scale;
+    this.height = 190 * this.scale;
 
     this.framesImg = 0;
     this.now = now;
@@ -236,7 +264,7 @@ class Enemy {
   draw() {
     ctx.drawImage(
       this.img,
-      130* this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      130 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
       0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
       130,
       190,
@@ -251,11 +279,11 @@ class Enemy {
   update() {
     this.now = Date.now();
     let difference = this.now - this.then;
-    if(difference >100){
+    if (difference > 100) {
       this.count++;
       this.then = this.now;
       this.framesImg++;
-    
+
       if (this.framesImg >= 9) {
         this.framesImg = 0;
       }
@@ -276,7 +304,6 @@ class Enemy {
       this.distance.travel = 0;
       this.speed.x = -this.speed.x;
     }
-    
   }
 }
 
@@ -327,11 +354,9 @@ class Particle {
   }
 }
 
-
 class FoodP {
-  constructor({
-    position,
-    speed}, // default value
+  constructor(
+    { position, speed } // default value
   ) {
     //aqui metes 1 object1o con items.
     this.position = {
@@ -343,9 +368,9 @@ class FoodP {
       x: speed.x,
       y: speed.y,
     };
-this.scale = 0.7
-    this.width = 200*this.scale;
-    this.height = 200*this.scale;
+    this.scale = 0.7;
+    this.width = 200 * this.scale;
+    this.height = 200 * this.scale;
 
     this.framesImg = 0;
     this.now = now;
@@ -355,7 +380,6 @@ this.scale = 0.7
     this.img = new Image();
     this.img.src = "images/lomito.png";
     //"/images/chiliSprite1.png"; para el chile
-
   }
 
   draw() {
@@ -376,11 +400,11 @@ this.scale = 0.7
   update() {
     this.now = Date.now();
     let difference = this.now - this.then;
-    if(difference >200){
+    if (difference > 200) {
       this.count++;
       this.then = this.now;
       this.framesImg++;
-    
+
       if (this.framesImg >= 9) {
         this.framesImg = 0;
       }
@@ -395,19 +419,12 @@ this.scale = 0.7
     if (this.position.y + this.height + this.speed.y <= canvas.height) {
       this.speed.y += gravity;
     }
-
-    
   }
 }
 
-
-
-
-
-class FoodC {
-  constructor({
-    position,
-    speed}, // default value
+class FoodT {
+  constructor(
+    { position, speed } // default value
   ) {
     //aqui metes 1 object1o con items.
     this.position = {
@@ -419,9 +436,9 @@ class FoodC {
       x: speed.x,
       y: speed.y,
     };
-this.scale = 0.5
-    this.width = 200*this.scale;
-    this.height = 200*this.scale;
+    this.scale = 0.5;
+    this.width = 200 * this.scale;
+    this.height = 200 * this.scale;
 
     this.framesImg = 0;
     this.now = now;
@@ -431,7 +448,6 @@ this.scale = 0.5
     this.img = new Image();
     this.img.src = "images/tacos.png";
     //"/images/chiliSprite1.png"; para el chile
-
   }
 
   draw() {
@@ -447,23 +463,20 @@ this.scale = 0.5
       this.width,
       this.height
     );
-
-
   }
 
   update() {
+    this.now = Date.now();
+    let difference = this.now - this.then;
+    if (difference > 100) {
+      this.count++;
+      this.then = this.now;
+      this.framesImg++;
 
-this.now = Date.now();
-let difference = this.now - this.then;
-if(difference >100){
-  this.count++;
-  this.then = this.now;
-  this.framesImg++;
-
-  if (this.framesImg >= 9) {
-    this.framesImg = 0;
-  }
-}
+      if (this.framesImg >= 9) {
+        this.framesImg = 0;
+      }
+    }
     this.draw();
 
     this.position.x += this.speed.x;
@@ -473,7 +486,67 @@ if(difference >100){
     if (this.position.y + this.height + this.speed.y <= canvas.height) {
       this.speed.y += gravity;
     }
+  }
+}
 
-    
+class Condor {
+  constructor(
+    { position, speed } // default value
+  ) {
+    //aqui metes 1 object1o con items.
+    this.position = {
+      x: position.x,
+      y: position.y,
+    };
+
+    this.speed = {
+      x: speed.x,
+      y: speed.y,
+    };
+    this.scale = 0.5;
+    this.width = 488 * this.scale;
+    this.height = 210 * this.scale;
+
+    this.framesImg = 0;
+    this.now = now;
+    this.then = then;
+    this.count = count;
+
+    this.img = new Image();
+    this.img.src = "images/condor.png";
+    //"/images/chiliSprite1.png"; para el chile
+  }
+
+  draw() {
+    ctx.drawImage(
+      this.img,
+      488 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
+      488,
+      210,
+
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
+  }
+
+  update() {
+    this.now = Date.now();
+    let difference = this.now - this.then;
+    if (difference > 100) {
+      this.count++;
+      this.then = this.now;
+      this.framesImg++;
+
+      if (this.framesImg >= 10) {
+        this.framesImg = 0;
+      }
+    }
+    this.draw();
+
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
   }
 }

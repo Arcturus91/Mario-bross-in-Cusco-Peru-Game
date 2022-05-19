@@ -18,11 +18,24 @@ window.onload = function () {
     }),
   ];
 
-  const foodsC = [
-    new FoodC({
+  const foodsT = [
+    new FoodT({
       position: {
         x: 300,
         y: -400,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+    }),
+  ];
+
+  const condor = [
+    new Condor({
+      position: {
+        x: 770 + 4 * canvas.width,
+        y: 200,
       },
       speed: {
         x: 0,
@@ -195,7 +208,10 @@ window.onload = function () {
     }),
   ];
 
-  const genericObjects = [new GenericObject({ x: 600, y: 100 }),new GenericObject({ x: 600+canvas.width, y: 100 })];
+  const genericObjects = [
+    new GenericObject({ x: 600, y: 100 }),
+    new GenericObject({ x: 600 + canvas.width, y: 100 }),
+  ];
 
   const enemies = [
     new Enemy({
@@ -288,8 +304,10 @@ window.onload = function () {
 
     drawPlatforms();
 
+    condor[0].update();
+
     //power up pollo
-    foodsP.forEach((food,index_food) => {
+    foodsP.forEach((food, index_food) => {
       if (
         objectsTouch({
           object1: player,
@@ -299,29 +317,30 @@ window.onload = function () {
         setTimeout(() => {
           foodsP.splice(index_food, 1);
         }, 1);
-
+        player.lifes += 50;
       } else {
         food.update();
       }
-      
     });
-//power up chile
-    foodsC.forEach((food, index_food) => {
+    //power up taco
+    foodsT.forEach((food, index_food) => {
       if (
         objectsTouch({
           object1: player,
           object2: food,
         })
       ) {
-        setTimeout(() => {
-          foodsC.splice(index_food, 1);
-        }, 1);
+        player.powerUps.fireFlower = true;
 
+        setTimeout(() => {
+          foodsT.splice(index_food, 1);
+        }, 1);
       } else {
         food.update();
       }
     });
 
+    console.log(player.lifes);
     //enemy rendering
     enemies.forEach((enemy, enemy_index) => {
       enemy.update();
@@ -352,13 +371,31 @@ window.onload = function () {
         setTimeout(() => {
           enemies.splice(enemy_index, 1);
         }, 1);
-      } else if (
+      }
+
+      //collision de costado tal que me quita una vida.
+      else if (
         player.position.x + player.width - 15 >= enemy.position.x &&
         player.position.y + player.height >= enemy.position.y &&
         player.position.x + 15 <= enemy.position.x + enemy.width &&
         player.position.y <= enemy.position.y + enemy.height
       ) {
-        gameOver();
+        if (!player.powerUps.fireFlower && !player.invincible) {
+          player.lifes--;
+        }
+
+        //player hits enemy when power up on
+        if (player.powerUps.fireFlower) {
+          player.invincible = true;
+          player.powerUps.fireFlower = false;
+
+          setTimeout(() => {
+            player.invincible = false;
+          }, 2000);
+        } else if (!player.invincible && player.lifes < 50) {
+          console.log(player.lifes);
+          gameOver();
+        }
       }
     });
 
@@ -399,16 +436,17 @@ window.onload = function () {
           particle.position.x -= player.velocity;
         });
 
-foodsC.forEach((food)=>{
-  food.position.x -= player.velocity;
-})
+        condor.forEach((item) => {
+          item.position.x -= player.velocity;
+        });
 
+        foodsT.forEach((food) => {
+          food.position.x -= player.velocity;
+        });
 
-foodsP.forEach((food)=>{
-  food.position.x -= player.velocity;
-})
-
-
+        foodsP.forEach((food) => {
+          food.position.x -= player.velocity;
+        });
       } else if (keys.left.pressed) {
         bg.x += 5;
         scrollOffset -= player.velocity;
@@ -439,7 +477,6 @@ foodsP.forEach((food)=>{
     platforms.forEach((platform) => {
       if (isOnTopOfPlatform({ object: player, platform: platform })) {
         player.speed.y = 0;
-        console.log(platform.position.x, platform.position.y);
       }
 
       particles.forEach((particle, index_particle) => {
@@ -469,7 +506,7 @@ foodsP.forEach((food)=>{
         }
       });
 
-      foodsC.forEach((food) => {
+      foodsT.forEach((food) => {
         if (isOnTopOfPlatform({ object: food, platform: platform })) {
           food.speed.y = 0;
         }
@@ -483,7 +520,7 @@ foodsP.forEach((food)=>{
         lastKey === "right" &&
         player.currentSprite !== player.sprites.run.right
       ) {
-        player.framesImg = 58;
+        //player.framesImg = 58;
         player.currentSprite = player.sprites.run.right;
         player.currentCropWidth = player.sprites.run.cropWidth;
         player.width = player.sprites.run.width;
@@ -509,6 +546,43 @@ foodsP.forEach((food)=>{
         player.currentSprite !== player.sprites.stand.left
       ) {
         player.currentSprite = player.sprites.stand.left;
+        player.currentCropWidth = player.sprites.stand.cropWidth;
+        player.width = player.sprites.stand.width;
+      }
+    }
+    //condition for power up
+    if (player.speed.y === 0 && player.powerUps.fireFlower) {
+      console.log("me transformo");
+      if (
+        keys.right.pressed &&
+        lastKey === "right" &&
+        player.currentSprite !== player.sprites.run.fireFlower.right
+      ) {
+        player.currentSprite = player.sprites.run.fireFlower.right;
+        player.currentCropWidth = player.sprites.run.cropWidth;
+        player.width = player.sprites.run.width;
+      } else if (
+        !keys.right.pressed &&
+        lastKey === "right" &&
+        player.currentSprite !== player.sprites.stand.fireFlower.right
+      ) {
+        player.currentSprite = player.sprites.stand.fireFlower.right;
+        player.currentCropWidth = player.sprites.stand.cropWidth;
+        player.width = player.sprites.stand.width;
+      } else if (
+        keys.left.pressed &&
+        lastKey === "left" &&
+        player.currentSprite !== player.sprites.run.fireFlower.left
+      ) {
+        player.currentSprite = player.sprites.run.fireFlower.left;
+        player.currentCropWidth = player.sprites.run.cropWidth;
+        player.width = player.sprites.run.width;
+      } else if (
+        !keys.left.pressed &&
+        lastKey === "left" &&
+        player.currentSprite !== player.sprites.stand.fireFlower.left
+      ) {
+        player.currentSprite = player.sprites.stand.fireFlower.left;
         player.currentCropWidth = player.sprites.stand.cropWidth;
         player.width = player.sprites.stand.width;
       }
@@ -584,6 +658,14 @@ foodsP.forEach((food)=>{
           player.currentSprite = player.sprites.jump.right;
         } else {
           player.currentSprite = player.sprites.jump.left;
+        }
+
+        if (!player.powerUps.fireFlower) break;
+
+        if (lastKey === "right") {
+          player.currentSprite = player.sprites.jump.fireFlower.right;
+        } else {
+          player.currentSprite = player.sprites.jump.fireFlower.left;
         }
         break;
     }
