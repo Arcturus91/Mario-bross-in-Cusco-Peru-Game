@@ -309,7 +309,8 @@ class Enemy {
 
 class Particle {
   //propiedades
-  constructor({ position, speed, radius }) {
+  constructor({ position, speed, radius,color ="red",
+fireball=false}) {
     this.position = {
       x: position.x,
       y: position.y,
@@ -322,7 +323,11 @@ class Particle {
 
     this.radius = radius;
     this.ttl = 300; //frames living.
+
+    this.color = color
+    this.fireball =fireball
   }
+
 
   //métodos:
 
@@ -336,7 +341,7 @@ class Particle {
       Math.PI * 2,
       false
     );
-    ctx.fillStyle = "red";
+    ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
   }

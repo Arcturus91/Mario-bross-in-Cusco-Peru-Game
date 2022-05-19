@@ -274,6 +274,21 @@ window.onload = function () {
         travel: 0,
       },
     }),
+    new Enemy({
+      //aqui metes 1 objeto con 2 itesm
+      position: {
+        x: 780 + canvas.width,
+        y: -500,
+      },
+      speed: {
+        x: -0.1,
+        y: 0,
+      },
+      distance: {
+        limit: 50,
+        travel: 0,
+      },
+    }),
 
     //fin
   ];
@@ -345,12 +360,59 @@ window.onload = function () {
     enemies.forEach((enemy, enemy_index) => {
       enemy.update();
 
+      //fireball hit:
+
+      //i need to make the balls only to remove the first enemy they touch
+      //a method  can be to make this collision to work only when
+      //a certain property is activated. once you touch one enemy, then the property turns false.
+
+      particles.filter(particle => particle.fireball).forEach((particle, particle_index) => {
+        if (
+          particle.position.x + particle.radius >= enemy.position.x &&
+          particle.position.y + particle.radius >= enemy.position.y &&
+          particle.position.x - particle.radius<= enemy.position.x + enemy.width &&
+          particle.position.y - particle.radius<= enemy.position.y + enemy.height
+        )
+          setTimeout(() => {
+            enemies.splice(enemy_index, 1);
+            particles.splice(particle_index, 1);
+
+//explosion if fireball hit
+
+for (let i = 0; i < 50; i++) {
+  particles.push(
+    new Particle({
+      position: {
+        x: enemy.position.x + enemy.width / 2,
+        y: enemy.position.y + enemy.height / 2,
+      },
+      speed: {
+        x: (Math.random() - 0.5) * 7,
+        y: (Math.random() - 0.5) * 15,
+      },
+      radius: Math.random() * 3,
+      color:"orange",
+      fireball:false
+    })
+  );
+}
+
+
+
+
+
+          }, 1);
+      });
+
       if (
         collisionTop({
           object1: player,
           object2: enemy,
         })
       ) {
+
+
+        //code for explosion when mario over soldier
         for (let i = 0; i < 50; i++) {
           particles.push(
             new Particle({
@@ -399,9 +461,22 @@ window.onload = function () {
       }
     });
 
-    particles.forEach((particle) => {
+    particles.forEach((particle,index_particle) => {
       particle.update();
+
+if(particle.fireball && particle.position.x - particle.radius >=
+  canvas.width
+  
+  || particle.fireball && particle.position.x - particle.radius <=
+  0
+  
+  ){
+
+    setTimeout(() => {particles.splice(index_particle,1)},0)
+    
+  }
     });
+console.log(particles)
     player.update();
 
     //controls section - scrolling code
@@ -478,7 +553,7 @@ window.onload = function () {
       if (isOnTopOfPlatform({ object: player, platform: platform })) {
         player.speed.y = 0;
       }
-
+//particle bounce
       particles.forEach((particle, index_particle) => {
         if (isOnTopOfPlatformCircle({ object: particle, platform: platform })) {
           particle.speed.y = -particle.speed.y * 0.9;
@@ -638,6 +713,7 @@ window.onload = function () {
   }
 
   addEventListener("keydown", (event) => {
+    //para mostrar el keycode de la tecla : console.log(event.keyCode)
     switch (event.keyCode) {
       case 65:
         keys.left.pressed = true;
@@ -667,6 +743,34 @@ window.onload = function () {
         } else {
           player.currentSprite = player.sprites.jump.fireFlower.left;
         }
+        break;
+
+      case 32:
+        if (!player.powerUps.fireFlower) {
+          return;
+        }
+
+        let speedX = 15;
+
+        if (lastKey === "left") {
+          speedX = -speedX;
+        }
+
+        particles.push(
+          new Particle({
+            position: {
+              x: player.position.x + player.width / 2,
+              y: player.position.y + player.height / 2,
+            },
+            speed: {
+              x: speedX,
+              y: 0,
+            },
+            radius: 5,
+            color: "orange",
+            fireball: true
+          })
+        );
         break;
     }
   });
