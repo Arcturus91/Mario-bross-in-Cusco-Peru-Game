@@ -419,9 +419,9 @@ class FoodC {
       x: speed.x,
       y: speed.y,
     };
-
-    this.width = 60;
-    this.height = 95;
+this.scale = 0.5
+    this.width = 200*this.scale;
+    this.height = 200*this.scale;
 
     this.framesImg = 0;
     this.now = now;
@@ -429,7 +429,7 @@ class FoodC {
     this.count = count;
 
     this.img = new Image();
-    this.img.src = "/images/chiliSprite1.png";
+    this.img.src = "images/tacos.png";
     //"/images/chiliSprite1.png"; para el chile
 
   }
@@ -437,10 +437,10 @@ class FoodC {
   draw() {
     ctx.drawImage(
       this.img,
-      60 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      200 * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
       0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
-      60,
-      95,
+      200,
+      200,
 
       this.position.x,
       this.position.y,
@@ -460,7 +460,7 @@ if(difference >100){
   this.then = this.now;
   this.framesImg++;
 
-  if (this.framesImg >= 13) {
+  if (this.framesImg >= 9) {
     this.framesImg = 0;
   }
 }
