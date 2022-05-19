@@ -3,10 +3,14 @@
 window.onload = function () {
   const bg = new Background(0);
 
+  const healthBar = new HealthBar(200,200,50,30,100,"green")
+
   const player = new Player();
 
   const foodsP = [
+
     new FoodP({
+
       position: {
         x: 800,
         y: 200,
@@ -15,7 +19,19 @@ window.onload = function () {
         x: 0,
         y: 0,
       },
+    }),    new FoodP({
+
+      position: {
+        x: 800+2*canvas.width,
+        y: 200,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
     }),
+
+
   ];
 
   const foodsT = [
@@ -34,7 +50,7 @@ window.onload = function () {
   const condor = [
     new Condor({
       position: {
-        x: 770 + 4 * canvas.width,
+        x: 970 + 4 * canvas.width,
         y: 200,
       },
       speed: {
@@ -43,6 +59,22 @@ window.onload = function () {
       },
     }),
   ];
+
+
+  const llama = [
+    new Llama({
+      position: {
+        x: 1020 + 4 * canvas.width,
+        y: 545,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+    }),
+  ];
+
+
 
   let platImage = "images/platformFF.png";
   let platLongImage = "images/platformLong.png";
@@ -191,6 +223,16 @@ window.onload = function () {
         h: 70,
       },
     }),
+
+    new Platform({
+      x: 870 + 4 * canvas.width,
+      y: 690,
+      source: platLongImage,
+      picDim: {
+        w: 400,
+        h: 70,
+      },
+    }),
     new Platform({
       x: 4 * canvas.width,
       y: 230,
@@ -211,6 +253,7 @@ window.onload = function () {
   const genericObjects = [
     new GenericObject({ x: 600, y: 100 }),
     new GenericObject({ x: 600 + canvas.width, y: 100 }),
+    new GenericObject({ x: 775 + 2.7*canvas.width, y: canvas.height-412,sourcebg:"images/fortaleza.png" , w:1000,h:412}),
   ];
 
   const enemies = [
@@ -242,7 +285,23 @@ window.onload = function () {
         limit: 100,
         travel: 0,
       },
+    }),new Enemy({
+      //aqui metes 1 objeto con 2 itesm
+      position: {
+        x: 700+2*canvas.width,
+        y: -500,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+      distance: {
+        limit: 100,
+        travel: 0,
+      },
     }),
+
+   
 
     new Enemy({
       //aqui metes 1 objeto con 2 itesm
@@ -277,11 +336,11 @@ window.onload = function () {
     new Enemy({
       //aqui metes 1 objeto con 2 itesm
       position: {
-        x: 780 + canvas.width,
+        x: 980 + canvas.width,
         y: -500,
       },
       speed: {
-        x: -0.1,
+        x: -0.2,
         y: 0,
       },
       distance: {
@@ -289,19 +348,37 @@ window.onload = function () {
         travel: 0,
       },
     }),
-
+//
+new Enemy({
+  //aqui metes 1 objeto con 2 itesm
+  position: {
+    x: 450 + 3 * canvas.width,
+    y: -500,
+  },
+  speed: {
+    x: -0.2,
+    y: 0,
+  },
+  distance: {
+    limit: 50,
+    travel: 0,
+  },
+}),
     //fin
   ];
 
   const particles = [];
 
   document.getElementById("start-button").onclick = function () {
+
+    
     if (!requestId) {
       startGame();
     }
   };
 
   function startGame() {
+    audio.play()
     requestId = requestAnimationFrame(updateGame);
   }
 
@@ -320,6 +397,8 @@ window.onload = function () {
     drawPlatforms();
 
     condor[0].update();
+    llama[0].update();
+    healthBar.update();
 
     //power up pollo
     foodsP.forEach((food, index_food) => {
@@ -355,7 +434,13 @@ window.onload = function () {
       }
     });
 
+    //life points section:
+
     console.log(player.lifes);
+
+
+
+
     //enemy rendering
     enemies.forEach((enemy, enemy_index) => {
       enemy.update();
@@ -515,6 +600,10 @@ console.log(particles)
           item.position.x -= player.velocity;
         });
 
+        llama.forEach((item) => {
+          item.position.x -= player.velocity;
+        });
+
         foodsT.forEach((food) => {
           food.position.x -= player.velocity;
         });
@@ -669,7 +758,7 @@ console.log(particles)
     }
 
     //win condition
-    if (scrollOffset >= 5800) {
+    if (scrollOffset >= 6500) {
       win();
     }
 
@@ -679,8 +768,10 @@ console.log(particles)
   }
 
   function gameOver() {
+    audio.pause()
     ctx.font = "50px Arial";
     ctx.fillText("Perdiste, refresh the page", 400, 400, 400, 400);
+    
     requestId = undefined;
   }
 

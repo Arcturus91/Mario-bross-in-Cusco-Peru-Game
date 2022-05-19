@@ -76,6 +76,20 @@ let then = Date.now();
 let now;
 let count = 0;
 
+
+
+
+//audio:
+const audio = new Audio ();
+//vamos a colocar el audio :
+
+audio.src = "audio/condorPasa.mp3"
+audio.loop = true;
+
+
+
+
+
 /* 
 
 

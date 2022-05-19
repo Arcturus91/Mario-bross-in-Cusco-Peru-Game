@@ -204,7 +204,7 @@ class Platform {
 }
 
 class GenericObject {
-  constructor({ x, y }) {
+  constructor({ x, y,sourcebg="images/machuP.png",w=614,h=650 }) {
     this.position = {
       x: x,
       y: y,
@@ -212,9 +212,10 @@ class GenericObject {
 
     this.img = new Image();
 
-    this.img.src = "images/machuP.png";
-    this.width = 614;
-    this.height = 650;
+    this.img.src = sourcebg;
+    this.width = w;
+    this.height = h;
+    //machuP tiene w 614 , h 650
   }
   draw() {
     ctx.drawImage(
@@ -554,4 +555,94 @@ class Condor {
     this.position.x += this.speed.x;
     this.position.y += this.speed.y;
   }
+}
+
+class Llama {
+  constructor(
+    { position, speed } // default value
+  ) {
+    //aqui metes 1 object1o con items.
+    this.position = {
+      x: position.x,
+      y: position.y,
+    };
+
+    this.speed = {
+      x: speed.x,
+      y: speed.y,
+    };
+    this.scale = 0.5;
+    this.width = (10620/60) * this.scale;
+    this.height = 300 * this.scale;
+
+    this.framesImg = 0;
+    this.now = now;
+    this.then = then;
+    this.count = count;
+
+    this.img = new Image();
+    this.img.src = "images/standingLlamaLeft3.png";
+    
+  }
+//10620 × 300
+  draw() {
+    ctx.drawImage(
+      this.img,
+      (10620/60) * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
+      (10620/60),
+      300,
+
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
+  }
+
+  update() {
+    this.now = Date.now();
+    let difference = this.now - this.then;
+    if (difference > 200) {
+      this.count++;
+      this.then = this.now;
+      this.framesImg++;
+
+      if (this.framesImg >= 2) {
+        this.framesImg = 0;
+      }
+    }
+    this.draw();
+
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+  }
+}
+
+class HealthBar {
+
+  constructor(x,y,w,h,maxHealth,color){
+    this.x=x;
+    this.y=y;
+    this.w=w;
+    this.h=h;
+    this.maxHealth=maxHealth;
+    this.maxWidth=w;
+    this.health = maxHealth;
+    this.color=color;
+  }
+
+draw(){
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "#333";
+  ctx.fillStyle = this.color
+  ctx.fillRect(this.x, this.y, this.w, this.h);
+  ctx.strokeRect(this.x, this.y, this.maxWidth, this.h)
+}
+
+update() {
+  this.draw();
+  console.log("si me pintan")
+}
+
 }
