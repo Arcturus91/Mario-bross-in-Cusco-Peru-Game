@@ -6,7 +6,7 @@ class Background {
     this.height = canvas.height;
     this.img = new Image(); //esta es nativa de JS.
     //ahora img vale = {src:"",onload:()=>{},}
-    this.img.src = "images/finalBg5.png";
+    this.img.src = "images/finalbg5.png";
   }
   //metodos:
   draw() {
