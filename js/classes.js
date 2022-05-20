@@ -308,7 +308,7 @@ class Enemy {
 
 class Particle {
   //propiedades
-  constructor({ position, speed, radius, color = "red", fireball = false,boss=false }) {
+  constructor({ position, speed, radius, color = "red", fireball = false,boss=false, mario = false}) {
     this.position = {
       x: position.x,
       y: position.y,
@@ -325,6 +325,8 @@ class Particle {
     this.color = color;
     this.fireball = fireball;
     this.boss = boss
+    this.mario=mario
+    
   }
 
   //métodos:
@@ -517,7 +519,7 @@ class Condor {
 
     this.img = new Image();
     this.img.src = "images/condor.png";
-    this.lifes=100;
+    this.lifes=400;
   }
 
   draw() {
@@ -580,7 +582,7 @@ class Llama {
     this.img = new Image();
     this.img.src = "images/standingLlamaLeft3.png";
 
-    this.lifes=100;
+    this.lifes=200;
 
   }
   //10620 × 300

@@ -62,6 +62,9 @@ const keys = {
     ,
     left: {
         pressed:false
+    },
+    space:{
+      pressed:false
     }
 }
 
