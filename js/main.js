@@ -2,10 +2,40 @@
 
 window.onload = function () {
   const bg = new Background(0);
-
-  const healthBar = new HealthBar(200,200,50,30,100,"green")
-
   const player = new Player();
+  const condor = [
+    new Condor({
+      position: {
+        x: 970 + 4 * canvas.width,
+        y: 200,
+      },
+      speed: {
+        x: 0,
+        y: 0, //si yo le modifico la velocidad aquí y le pongo -1 por ejemplo, el condor se va.
+      },
+    }),
+  ];
+
+
+  const llama = [
+    new Llama({
+      position: {
+        x: 1020 + 4 * canvas.width,
+        y: 545,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+    }),
+  ];
+
+  let healthBarM = new HealthBar(100,100,100,30,200,100,player.lifes,color="green")
+
+  let healthBarL = new HealthBar(800,100,100,30,200,100,llama.lifes,color="green")
+  //LLAMA POSITION FINAL DE BARRA : 1020 + 4 * canvas.width,
+
+  let healthBarC = new HealthBar(1100,100,100,30,200,100,condor.lifes,color="green")
 
   const foodsP = [
 
@@ -45,26 +75,9 @@ window.onload = function () {
         y: 0,
       },
     }),
-  ];
-
-  const condor = [
-    new Condor({
+    new FoodT({
       position: {
-        x: 970 + 4 * canvas.width,
-        y: 200,
-      },
-      speed: {
-        x: 0,
-        y: 0,
-      },
-    }),
-  ];
-
-
-  const llama = [
-    new Llama({
-      position: {
-        x: 1020 + 4 * canvas.width,
+        x: 800 + 4 * canvas.width,
         y: 545,
       },
       speed: {
@@ -73,6 +86,8 @@ window.onload = function () {
       },
     }),
   ];
+
+
 
 
 
@@ -138,7 +153,7 @@ window.onload = function () {
     }),
     new Platform({
       x: 300,
-      y: 230,
+      y: 330,
       source: platImage,
     }),
     new Platform({
@@ -248,6 +263,16 @@ window.onload = function () {
       y: 450,
       source: platImage,
     }),
+
+    ,
+    new Platform({
+      x: 300+ 3 * canvas.width,
+      y: 230,
+      source: platImage,
+    }),
+
+
+
   ];
 
   const genericObjects = [
@@ -300,8 +325,23 @@ window.onload = function () {
         travel: 0,
       },
     }),
+    ,new Enemy({
+      //aqui metes 1 objeto con 2 itesm
+      position: {
+        x: 300+ 3 * canvas.width,
+        y: -500,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+      distance: {
+        limit: 50,
+        travel: 0,
+      },
+    }),
 
-   
+
 
     new Enemy({
       //aqui metes 1 objeto con 2 itesm
@@ -350,9 +390,9 @@ window.onload = function () {
     }),
 //
 new Enemy({
-  //aqui metes 1 objeto con 2 itesm
+  //aqui metes 1 objeto con 2 item
   position: {
-    x: 450 + 3 * canvas.width,
+    x: 480 + 3 * canvas.width,
     y: -500,
   },
   speed: {
@@ -397,9 +437,83 @@ new Enemy({
     drawPlatforms();
 
     condor[0].update();
-    llama[0].update();
-    healthBar.update();
 
+    //condor fires:
+
+
+if(frames %130 === 0){
+  particles.push(
+    new Particle({
+      position: {
+        x: condor[0].position.x + condor[0].width / 2,
+        y: condor[0].position.y + condor[0].height / 2,
+      },
+      speed: {
+        x: -10,
+        y: 0,
+      },
+      radius: 7,
+      color: "#3e424b",
+      fireball: true,
+      boss:true
+    })
+  );}
+
+
+
+  
+    llama[0].update();
+
+//llama fires:
+
+if(frames %100 === 0){
+  particles.push(
+    new Particle({
+      position: {
+        x: llama[0].position.x + llama[0].width / 2,
+        y: llama[0].position.y + llama[0].height / 2,
+      },
+      speed: {
+        x: -10,
+        y: 0,
+      },
+      radius: 7,
+      color: "#42c2ff",
+      fireball: true,
+      boss:true
+    })
+  );}
+
+
+  
+
+    healthBarM.update(player.lifes);
+    healthBarL.update(llama.lifes);
+    healthBarC.update(condor.lifes);
+
+
+    if(player.lifes < 75){
+      healthBarM.color="red"
+    } else {
+      healthBarM.color="green"
+    }
+
+    if(llama.lifes < 25){
+      healthBarL.color="red"
+    } else {
+      healthBarL.color="green"
+    }
+
+    if(condor.lifes < 25){
+      healthBarC.color="red"
+    } else {
+      healthBarC.color="green"
+    }
+
+
+
+
+    
     //power up pollo
     foodsP.forEach((food, index_food) => {
       if (
@@ -425,7 +539,7 @@ new Enemy({
         })
       ) {
         player.powerUps.fireFlower = true;
-
+//si hay contacto con el taco, entonces acivas el player.powerUps.fireFlower = true;
         setTimeout(() => {
           foodsT.splice(index_food, 1);
         }, 1);
@@ -481,12 +595,36 @@ for (let i = 0; i < 50; i++) {
     })
   );
 }
-
-
-
-
-
           }, 1);
+
+          
+          if (particle.boss &&
+            particle.position.x + particle.radius >= player.position.x &&
+            particle.position.y + particle.radius >= player.position.y &&
+            particle.position.x - particle.radius<= player.position.x + player.width &&
+            particle.position.y - particle.radius<= player.position.y + player.height
+          ){
+
+
+            
+              if (!player.powerUps.fireFlower && !player.invincible) { //solo quitas vida si tienes player.powerUps.fireFlower como false 
+                player.lifes-=2.1; // y !player.invincible como false
+              }
+      
+              //player hits enemy when power up on
+              if (player.powerUps.fireFlower) { //si ya tienes activado el player.powerUps.fireFlower cuando chocas con una bala..
+                player.invincible = true; // sacame la invincibilidad como true 
+                player.powerUps.fireFlower = false; // y cambiame el player.powerUps.fireFlower a false para qe cambie el sprite.
+      
+                setTimeout(() => {
+                  player.invincible = false; // pero quitame la invincibilidad en 2 segundos.
+                }, 2000);
+              } else if (!player.invincible && player.lifes <= 0) {
+                
+                gameOver();
+              }
+          
+          }
       });
 
       if (
@@ -527,19 +665,19 @@ for (let i = 0; i < 50; i++) {
         player.position.x + 15 <= enemy.position.x + enemy.width &&
         player.position.y <= enemy.position.y + enemy.height
       ) {
-        if (!player.powerUps.fireFlower && !player.invincible) {
-          player.lifes--;
+        if (!player.powerUps.fireFlower && !player.invincible) { //solo quitas vida si tienes player.powerUps.fireFlower como false 
+          player.lifes-=4; // y !player.invincible como false
         }
 
         //player hits enemy when power up on
-        if (player.powerUps.fireFlower) {
-          player.invincible = true;
-          player.powerUps.fireFlower = false;
+        if (player.powerUps.fireFlower) { //si ya tienes activado el player.powerUps.fireFlower cuando chocas con un soldado...
+          player.invincible = true; // sacame la invincibilidad como true 
+          player.powerUps.fireFlower = false; // y cambiame el player.powerUps.fireFlower a false para qe cambie el sprite.
 
           setTimeout(() => {
-            player.invincible = false;
+            player.invincible = false; // pero quitame la invincibilidad en 2 segundos.
           }, 2000);
-        } else if (!player.invincible && player.lifes < 50) {
+        } else if (!player.invincible && player.lifes <= 0) {
           console.log(player.lifes);
           gameOver();
         }
@@ -561,8 +699,10 @@ if(particle.fireball && particle.position.x - particle.radius >=
     
   }
     });
-console.log(particles)
+
     player.update();
+
+    console.log(player.invincible)
 
     //controls section - scrolling code
     //rigth and left
@@ -633,7 +773,8 @@ console.log(particles)
     }
 
     if (player.position.y < 0) {
-      player.speed.y += 1;
+      player.speed.y = 1;
+      player.position.y = 0
     }
 
     //platform collision detection section
@@ -714,9 +855,9 @@ console.log(particles)
         player.width = player.sprites.stand.width;
       }
     }
-    //condition for power up
+    //condition for power up. player.powerUps.fireFlower asegura que esté en true para poner los sprites
     if (player.speed.y === 0 && player.powerUps.fireFlower) {
-      console.log("me transformo");
+      
       if (
         keys.right.pressed &&
         lastKey === "right" &&
@@ -757,9 +898,9 @@ console.log(particles)
       gameOver();
     }
 
-    //win condition
-    if (scrollOffset >= 6500) {
-      win();
+    //loose por si vuelas el mapa.
+    if (scrollOffset >= 6500 ) {
+      gameOver();
     }
 
     if (requestId) {
@@ -769,22 +910,37 @@ console.log(particles)
 
   function gameOver() {
     audio.pause()
-    ctx.font = "50px Arial";
-    ctx.fillText("Perdiste, refresh the page", 400, 400, 400, 400);
+
+    
+
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#0D5BE1";
+    ctx.fillStyle = "black";
+    ctx.fillRect(350,330,500,100);
+    ctx.strokeRect(350,330,500,100);
+
+    ctx.font = "bold 50px Arial";
+    ctx.fillStyle = "#ff0000";
+    ctx.fillText("You lost, refresh the page", 400, 400, 400, 400); 
+    
     
     requestId = undefined;
   }
 
   function win() {
-    ctx.font = "50px Arial";
-    ctx.fillText(
-      "Congratulations, you defended the entrance! Now lets go inside",
-      400,
-      400,
-      400,
-      400
-    );
-    requestId = undefined;
+    ctx.drawImage(winImg,400,200,498,446)
+
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#0D5BE1";
+    ctx.fillStyle = "white";
+    ctx.fillRect(350,330,500,100);
+    ctx.strokeRect(350,330,500,100);
+
+    ctx.font = "bold 50px Arial";
+    ctx.fillStyle = "green";
+    ctx.fillText("Congratulations, YOU ARE WORTH entering the Sacsayhuamán palace", 400, 400, 400, 400); 
+
+    requestId = undefined; 
   }
 
   function drawPlatforms() {
@@ -820,6 +976,7 @@ console.log(particles)
         break;
 
       case 87:
+        
         player.speed.y -= 20;
         if (lastKey === "right") {
           player.currentSprite = player.sprites.jump.right;

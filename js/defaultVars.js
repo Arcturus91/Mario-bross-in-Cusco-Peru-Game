@@ -1,7 +1,12 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+const winImg = new Image()
+winImg.src = "images/youWin.png"
 
+
+
+//
 function isOnTopOfPlatform({object,platform}){
   return (  object.position.y + object.height <= platform.position.y &&
     object.position.y + object.height + object.speed.y >=

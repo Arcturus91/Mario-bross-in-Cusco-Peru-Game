@@ -52,8 +52,8 @@ class Player {
     };
 
     this.framesImg = 0;
-    this.invincible = false
-    this.lifes = 100
+    this.invincible = false;
+    this.lifes = 100;
 
     this.sprites = {
       stand: {
@@ -123,10 +123,9 @@ class Player {
     if (
       this.framesImg > 58 &&
       (this.currentSprite === this.sprites.stand.right ||
-        this.currentSprite === this.sprites.stand.left||
-        this.currentSprite === this.sprites.stand.fireFlower.right||
-        this.currentSprite === this.sprites.stand.fireFlower.left
-        )
+        this.currentSprite === this.sprites.stand.left ||
+        this.currentSprite === this.sprites.stand.fireFlower.right ||
+        this.currentSprite === this.sprites.stand.fireFlower.left)
     ) {
       this.framesImg = 0;
     }
@@ -135,16 +134,15 @@ class Player {
       this.framesImg > 28 &&
       (this.currentSprite === this.sprites.run.right ||
         this.currentSprite === this.sprites.run.left ||
-        this.currentSprite === this.sprites.run.fireFlower.left||
+        this.currentSprite === this.sprites.run.fireFlower.left ||
         this.currentSprite === this.sprites.run.fireFlower.right)
     ) {
       this.framesImg = 0;
     } else if (
       this.currentSprite === this.sprites.jump.right ||
-      this.currentSprite === this.sprites.jump.left||
-      this.currentSprite === this.sprites.jump.fireFlower.left||
+      this.currentSprite === this.sprites.jump.left ||
+      this.currentSprite === this.sprites.jump.fireFlower.left ||
       this.currentSprite === this.sprites.jump.fireFlower.right
-      
     ) {
       this.framesImg = 0;
     }
@@ -204,7 +202,7 @@ class Platform {
 }
 
 class GenericObject {
-  constructor({ x, y,sourcebg="images/machuP.png",w=614,h=650 }) {
+  constructor({ x, y, sourcebg = "images/machuP.png", w = 614, h = 650 }) {
     this.position = {
       x: x,
       y: y,
@@ -310,8 +308,7 @@ class Enemy {
 
 class Particle {
   //propiedades
-  constructor({ position, speed, radius,color ="red",
-fireball=false}) {
+  constructor({ position, speed, radius, color = "red", fireball = false,boss=false }) {
     this.position = {
       x: position.x,
       y: position.y,
@@ -325,10 +322,10 @@ fireball=false}) {
     this.radius = radius;
     this.ttl = 300; //frames living.
 
-    this.color = color
-    this.fireball =fireball
+    this.color = color;
+    this.fireball = fireball;
+    this.boss = boss
   }
-
 
   //métodos:
 
@@ -520,7 +517,7 @@ class Condor {
 
     this.img = new Image();
     this.img.src = "images/condor.png";
-    //"/images/chiliSprite1.png"; para el chile
+    this.lifes=100;
   }
 
   draw() {
@@ -572,7 +569,7 @@ class Llama {
       y: speed.y,
     };
     this.scale = 0.5;
-    this.width = (10620/60) * this.scale;
+    this.width = (10620 / 60) * this.scale;
     this.height = 300 * this.scale;
 
     this.framesImg = 0;
@@ -582,15 +579,17 @@ class Llama {
 
     this.img = new Image();
     this.img.src = "images/standingLlamaLeft3.png";
-    
+
+    this.lifes=100;
+
   }
-//10620 × 300
+  //10620 × 300
   draw() {
     ctx.drawImage(
       this.img,
-      (10620/60) * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
+      (10620 / 60) * this.framesImg, //segun los pixeles, tu puedes dar desde dónde vas a cortar, y luego
       0, // hasta donde. Mira abajo: hay dimensiones indicando hasta dónde cortar
-      (10620/60),
+      10620 / 60,
       300,
 
       this.position.x,
@@ -620,29 +619,29 @@ class Llama {
 }
 
 class HealthBar {
-
-  constructor(x,y,w,h,maxHealth,color){
-    this.x=x;
-    this.y=y;
-    this.w=w;
-    this.h=h;
-    this.maxHealth=maxHealth;
-    this.maxWidth=w;
-    this.health = maxHealth;
-    this.color=color;
+  constructor(x,y,w, h, mW,health,maxHealth, color="green") {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.maxHealth = maxHealth;
+    this.maxWidth = mW
+    this.health = health;
+    this.color = color;
   }
 
-draw(){
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = "#333";
-  ctx.fillStyle = this.color
-  ctx.fillRect(this.x, this.y, this.w, this.h);
-  ctx.strokeRect(this.x, this.y, this.maxWidth, this.h)
-}
+  draw() {
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#0D5BE1";
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.strokeRect(this.x, this.y, this.maxWidth, this.h);
+  }
 
-update() {
-  this.draw();
-  console.log("si me pintan")
-}
+  update(val) {
+    this.draw();
 
+    this.health = val;
+    this.w = (this.health / this.maxHealth) * this.maxWidth*0.5;
+  }
 }
