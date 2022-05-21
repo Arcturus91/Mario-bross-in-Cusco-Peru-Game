@@ -104,7 +104,7 @@ let count = 0;
 //
 const audioIni = new Audio ();
 //vamos a colocar el audio :
-
+audioIni.volume= 0.5
 audioIni.src = "audio/drama.mp3"
 audioIni.loop = true;
 
@@ -114,7 +114,7 @@ audioIni.loop = true;
 //audio:
 const audio = new Audio ();
 //vamos a colocar el audio :
-
+audio.volume= 0.5
 audio.src = "audio/condorPasa.mp3"
 audio.loop = true;
 /* 
