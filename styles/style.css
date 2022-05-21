@@ -1,77 +1,128 @@
-@media only screen and (max-width: 1500px) {
-
- /* le puse 1500 para que funcione en por ahora */
-
- #canvas{
-    background-color:orange;
-    padding: 10px;
-    margin:50px
-
-} 
-
-
-.intro {
-margin:50px
-} 
-
-body{
-    background-color:rgba(39,24,120);
-    display:flex;
-    align-items:center;
-    flex-direction:column;
-    justify-content:center;
-    
+body {
+  background-color: rgba(39, 24, 120);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #home {
-    display:flex;
-    align-items:center;
-    flex-direction:column;
-    justify-content:center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
-#home h1{
-    color:white;
-    margin-top:90px;
-    font-size: 100px;
+#home h1 {
+  color: white;
+  margin-top: 60px;
+  font-size: 80px;
+  margin-bottom: 0px;
+  text-align: center;
 }
 
 #boss {
-    display:flex;
-    align-items:center;
-    flex-direction:column;
-    justify-content:center;  
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
-#boss h1{
-    color:white;
-    margin-top:90px;
-    font-size: 80px;
+#boss h1 {
+  color: white;
+  margin-top: 60px;
+  font-size: 60px;
+  margin-bottom: 0px;
+  text-align: center;
 }
 
-#controls{
-    display:flex;
-    flex-direction:column;
-    align-items: center;
+#controls {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
-
-body img {
-    margin:10px
+#controls h1 {
+  color: white;
+  margin-top: 60px;
+  font-size: 60px;
+  margin-bottom: 0px;
+  text-align: center;
 }
 
+#controls h2 {
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    
+  }
 
 #start-button {
-    font-size: 40px;
-    background-color: red;
-    color: #fff;
-    padding: 10px 20px;
-    border: 0;
-    box-shadow: 0;
-    border-radius: 5px;
-    margin: 50px;
-
-
+  font-size: 40px;
+  background-color: red;
+  color: #fff;
+  padding: 10px 20px;
+  border: 0;
+  box-shadow: 0;
+  border-radius: 5px;
+  margin: 50px;
 }
 
+body img {
+  margin: 10px;
+}
+
+.imgClass {
+    margin: 50px;
+    width: 100%;}
+
+
+  #canvas {
+    background-color: orange;
+    padding: 10px;
+    margin: 70px;}
+
+
+/* para tables o pantallas pequeñas */
+
+    @media screen and (min-width: 768px) {
+
+#canvas {
+    width: 30 rem;
+  }
+
+  #home {
+    width: 30rem;
+  }
+
+  #boss {
+    width: 30rem;
+  }
+
+  #controls {
+    width: 30rem;
+  }
+    }
+
+
+    /* para pantallas desktop */
+
+@media only screen and (min-width: 1200px) {
+
+#canvas {
+    width: 70rem;
+  }
+
+  #home {
+    width: 70rem;
+  }
+
+  #boss {
+    width: 70rem;
+  }
+
+  #controls {
+    width: 70rem;
+  }
 }

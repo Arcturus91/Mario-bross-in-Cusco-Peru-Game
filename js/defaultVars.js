@@ -107,6 +107,17 @@ const audio = new Audio ();
 
 audio.src = "audio/condorPasa.mp3"
 audio.loop = true;
+/* 
+
+ width=`${1270.1*0.9}`
+          height=`${640.9*0.9}`
 
 
+                    width=`${1270.1*0.9}`
+          height=`${877.5*0.9}`
+
+
+                    width="1270.1"
+          height="465.4"
+*/
 

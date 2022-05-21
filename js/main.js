@@ -1,6 +1,8 @@
-//grabado hasta aqui!! 19:21
+
 
 window.onload = function () {
+
+  
   const bg = new Background(0);
   const player = new Player();
 
