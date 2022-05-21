@@ -1,8 +1,8 @@
 
 
 window.onload = function () {
+  audioIni.play();
 
-  
   const bg = new Background(0);
   const player = new Player();
 
@@ -451,6 +451,7 @@ setTimeout(() => {
 
     if (!requestId) {
       startGame();
+      audioIni.pause();
     }
   }, 3000);
     

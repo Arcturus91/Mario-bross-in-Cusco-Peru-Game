@@ -99,6 +99,16 @@ let now;
 let count = 0;
 
 
+//audio intro:
+
+//
+const audioIni = new Audio ();
+//vamos a colocar el audio :
+
+audioIni.src = "audio/drama.mp3"
+audioIni.loop = true;
+
+
 
 
 //audio:
