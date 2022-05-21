@@ -6,6 +6,35 @@ body {
   justify-content: center;
 }
 
+
+.nav-bar {
+  background: 	rgba(25, 33, 41);
+  padding: 14px 0px 14px;
+}
+
+.nav-bar-ul{
+ 
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.nav-bar-ul li{
+list-style:none;
+  list-style-type: none;
+    text-align:center
+}
+
+.nav-bar a {
+  color:white;
+  text-decoration: none;
+  font-size: 2em;
+}
+
+
+
+
+
 #home {
   display: flex;
   align-items: center;
@@ -109,6 +138,9 @@ body img {
     /* para pantallas desktop */
 
 @media only screen and (min-width: 1200px) {
+
+  .nav-bar-ul{
+    width: 1200px;}
 
 #canvas {
     width: 70rem;
