@@ -107,6 +107,17 @@ window.onload = function () {
         y: 0,
       },
     }),
+
+    new FoodT({
+      position: {
+        x: 1150 + 4 * canvas.width,
+        y: 545,
+      },
+      speed: {
+        x: 0,
+        y: 0,
+      },
+    }),
   ];
 
   let platImage = "images/platformFF.png";
@@ -431,9 +442,16 @@ window.onload = function () {
   const particles = [];
 
   document.getElementById("start-button").onclick = function () {
+
+setTimeout(() => {
+  
+
+
     if (!requestId) {
       startGame();
     }
+  }, 3000);
+    
   };
 
   function startGame() {
@@ -444,11 +462,10 @@ window.onload = function () {
   function updateGame() {
     frames++;
 
-    console.log(llama, condor);
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bg.draw();
+
     genericObjects.forEach((genericObject) => {
       genericObject.draw();
     });
@@ -457,7 +474,7 @@ window.onload = function () {
 
     condor[0].update();
 
-    //condor fires double
+    //condor fires triple
 
     if (frames % 130 === 0) {
       particles.push(
@@ -497,6 +514,25 @@ window.onload = function () {
       );
     }
 
+    if (frames % 150 === 0) {
+      particles.push(
+        new Particle({
+          position: {
+            x: condor[0].position.x + condor[0].width / 2,
+            y: condor[0].position.y + condor[0].height / 2,
+          },
+          speed: {
+            x: 5,
+            y: 0,
+          },
+          radius: 10,
+          color: "#3e424b",
+          fireball: true,
+          boss: true,
+        })
+      );
+    }
+
     llama[0].update();
 
     //llama fires:
@@ -521,8 +557,11 @@ window.onload = function () {
     }
 
     healthBarM.update(player.lifes);
+    healthBarName("Mario", 100, 80);
     healthBarL.update(llama[0].lifes);
+    healthBarName("Llama Boss", 800, 80);
     healthBarC.update(condor[0].lifes);
+    healthBarName("Condor Boss", 1100, 80);
 
     if (player.lifes < 75) {
       healthBarM.color = "red";
@@ -588,42 +627,41 @@ window.onload = function () {
       //a method  can be to make this collision to work only when
       //a certain property is activated. once you touch one enemy, then the property turns false.
 
-      particles
-        .filter((particle) => particle.fireball)
-        .forEach((particle, particle_index) => {
-          if (
-            particle.position.x + particle.radius >= enemy.position.x &&
-            particle.position.y + particle.radius >= enemy.position.y &&
-            particle.position.x - particle.radius <=
-              enemy.position.x + enemy.width &&
-            particle.position.y - particle.radius <=
-              enemy.position.y + enemy.height
-          )
-            setTimeout(() => {
-              enemies.splice(enemy_index, 1);
-              particles.splice(particle_index, 1);
+      particles.forEach((particle, particle_index) => {
+        if (
+          particle.fireball &&
+          particle.position.x + particle.radius >= enemy.position.x &&
+          particle.position.y + particle.radius >= enemy.position.y &&
+          particle.position.x - particle.radius <=
+            enemy.position.x + enemy.width &&
+          particle.position.y - particle.radius <=
+            enemy.position.y + enemy.height
+        )
+          setTimeout(() => {
+            enemies.splice(enemy_index, 1);
+            particles.splice(particle_index, 1);
 
-              //explosion if fireball hit
+            //explosion if fireball hit
 
-              for (let i = 0; i < 50; i++) {
-                particles.push(
-                  new Particle({
-                    position: {
-                      x: enemy.position.x + enemy.width / 2,
-                      y: enemy.position.y + enemy.height / 2,
-                    },
-                    speed: {
-                      x: (Math.random() - 0.5) * 7,
-                      y: (Math.random() - 0.5) * 15,
-                    },
-                    radius: Math.random() * 3,
-                    color: "orange",
-                    fireball: false,
-                  })
-                );
-              }
-            }, 1);
-        });
+            for (let i = 0; i < 50; i++) {
+              particles.push(
+                new Particle({
+                  position: {
+                    x: enemy.position.x + enemy.width / 2,
+                    y: enemy.position.y + enemy.height / 2,
+                  },
+                  speed: {
+                    x: (Math.random() - 0.5) * 7,
+                    y: (Math.random() - 0.5) * 15,
+                  },
+                  radius: Math.random() * 3,
+                  color: "orange",
+                  fireball: false,
+                })
+              );
+            }
+          }, 1);
+      });
       //collision por encima mario / soldado
       if (
         collisionTop({
@@ -753,8 +791,11 @@ window.onload = function () {
         //hitting condor
         if (
           particle.mario &&
+          //ataque desde la derecha
           particle.position.x + particle.radius >= condor[0].position.x &&
           particle.position.y + particle.radius >= condor[0].position.y &&
+          particle.position.x - particle.radius <=
+            condor[0].position.x + condor[0].width &&
           particle.position.y - particle.radius <=
             condor[0].position.y + condor[0].height
         ) {
@@ -835,12 +876,11 @@ window.onload = function () {
       //fin codigo de hitting llama from above.
     }
 
-if(llama[0].lifes <= 0 && condor[0].lifes <= 0){
-  setTimeout(() => {
-    win();
-  }, 3000);
-}
-
+    if (llama[0].lifes <= 0 && condor[0].lifes <= 0) {
+      setTimeout(() => {
+        win();
+      }, 3000);
+    }
 
     //-------------------------->fin cógido para con bossess<---------------------------------------------------
 

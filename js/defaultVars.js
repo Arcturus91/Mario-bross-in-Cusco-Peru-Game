@@ -5,6 +5,20 @@ const winImg = new Image()
 winImg.src = "images/youWin.png"
 
 
+let name, xName,yName
+
+function healthBarName(name,xName,yName) {
+
+
+
+  ctx.font = "bold 20px Arial";
+  ctx.fillStyle = "blue";
+  ctx.fillText(`${name} Lifebar`, xName, yName, 400, 400);
+
+  
+}
+
+
 
 //
 function isOnTopOfPlatform({object,platform}){
@@ -96,59 +110,3 @@ audio.loop = true;
 
 
 
-
-
-/* 
-
-
-
-    
-
-    
-
-    new Enemy({
-      //aqui metes 1 objeto con 2 itesm
-      position: {
-        x: 1200,
-        y: -500,
-      },
-      speed: {
-        x: -0.2,
-        y: 0,
-      },
-      distance: {
-        limit: 200,
-        travel: 0,
-      },
-    }),
-    new Enemy({
-      //aqui metes 1 objeto con 2 itesm
-      position: {
-        x: 1500,
-        y: -500,
-      },
-      speed: {
-        x: -0.1,
-        y: 0,
-      },
-      distance: {
-        limit: 200,
-        travel: 0,
-      },
-    }),
-    new Enemy({
-      //aqui metes 1 objeto con 2 itesm
-      position: {
-        x: 1070,
-        y: -500,
-      },
-      speed: {
-        x: -0.1,
-        y: 0,
-      },
-      distance: {
-        limit: 200,
-        travel: 0,
-      },
-    }),
- */
