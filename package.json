@@ -1,0 +1,24 @@
+{
+  "name": "mario-bros-cusco-level",
+  "dependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "description": "Game assignment for IronHack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arcturus91/projectGame1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arcturus91/projectGame1/issues"
+  },
+  "homepage": "https://github.com/Arcturus91/projectGame1#readme"
+}
