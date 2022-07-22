@@ -1,13 +1,15 @@
 {
   "name": "mario-bros-cusco-level",
   "dependencies": {
+    "express": "^4.18.1",
+    "hbs": "^4.2.0",
     "nodemon": "^2.0.19"
   },
   "description": "Game assignment for IronHack",
   "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

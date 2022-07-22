@@ -1,7 +1,12 @@
 
 
 window.onload = function () {
-  audioIni.play();
+
+  const musicElement =document.getElementById("music");
+
+  musicElement.addEventListener("click", function(){ alert("When you start playing the game, you will listen another song: <El Condor Pasa - Daniel Alomía Robles, 1913 >");
+  audioIni.play(); });
+  
 
   const bg = new Background(0);
   const player = new Player();
@@ -444,6 +449,8 @@ window.onload = function () {
   const particles = [];
 
   document.getElementById("start-button").onclick = function () {
+
+    alert("Song: <El Condor Pasa - Daniel Alomía Robles, 1913 >")
 
 setTimeout(() => {
   
