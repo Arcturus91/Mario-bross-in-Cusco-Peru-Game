@@ -4,7 +4,7 @@ window.onload = function () {
 
   const musicElement =document.getElementById("music");
 
-  musicElement.addEventListener("click", function(){ alert("When you start playing the game, you will listen another song: <El Condor Pasa - Daniel Alomía Robles, 1913 >");
+  musicElement.addEventListener("click", function(){ 
   audioIni.play(); });
   
 
@@ -450,7 +450,7 @@ window.onload = function () {
 
   document.getElementById("start-button").onclick = function () {
 
-    alert("Song: <El Condor Pasa - Daniel Alomía Robles, 1913 >")
+    
 
 setTimeout(() => {
   
